@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using Hangfire;
 
 namespace UGSK.K3.Pulse
 {
@@ -65,7 +66,7 @@ namespace UGSK.K3.Pulse
             _logger = logger;
         }
 
-        public async Task Process(SaleSystemNotification notification)
+        public async Task ProcessAsync(SaleSystemNotification notification)
         {
             var counter = new Counter() { Product = notification.Product, PeriodKind = PeriodKind.Daily, PeriodStart = DateTimeOffset.Now.Date, Kind = CounterKind.Total };
 
@@ -75,7 +76,23 @@ namespace UGSK.K3.Pulse
 
             var savedCounter = await _storage.UpdateCounter(counter, delta);
 
-            await _broadcaster.SendCounter(new CounterMessage() { Product = notification.Product, Value = savedCounter.Value });
+            await _broadcaster.SendCounter(new CounterMessage
+            {
+                Product = notification.Product,
+                Value = savedCounter.Value,
+                PeriodStart = counter.PeriodStart.Date
+            });
+        }
+    }
+
+    class DefaultCounterProcessorAdapter : DefaultCounterProcessor
+    {
+        public DefaultCounterProcessorAdapter(IBroadcaster broadcaster, IDataStorage storage, ILogger logger) : base(broadcaster, storage, logger)
+        {}
+
+        public void Process(SaleSystemNotification notification)
+        {
+            ProcessAsync(notification).Wait();
         }
     }
 
@@ -88,7 +105,7 @@ namespace UGSK.K3.Pulse
         {
             _broadcaster = broadcaster;
             _storage = storage;
-            
+
         }
 
         public async Task Process(Index index)

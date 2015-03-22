@@ -5,7 +5,7 @@ using System.Web;
 
 namespace UGSK.K3.Pulse
 {
-    public enum PeriodKind { Daily=1, Weekly=2, Monthly=3 }
+    public enum PeriodKind { Daily = 1, Weekly = 2, Monthly = 3 }
 
     public enum CounterKind { Average, Total }
 
@@ -24,16 +24,18 @@ namespace UGSK.K3.Pulse
         public int Value { get; set; }
         public CounterKind Kind { get; set; }
         public DateTimeOffset PeriodStart { get; set; }
+        public bool IsClosed { get; set; }
     }
 
-    class CounterMessage
+    public class CounterMessage
     {
         public string Product { get; set; }
         public PeriodKind PeriodKind { get; set; }
         public int Value { get; set; }
+        public DateTime PeriodStart { get; set; }
     }
 
-    class IndexMessage
+    public class IndexMessage
     {
         public string Product { get; set; }
         public int Value { get; set; }
@@ -42,7 +44,6 @@ namespace UGSK.K3.Pulse
     public class Index
     {
         public string Product { get; set; }
-        public PeriodKind PeriodKind { get; set; }
         public int Value { get; set; }
     }
 }
