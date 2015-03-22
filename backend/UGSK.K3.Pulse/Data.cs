@@ -1,0 +1,48 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace UGSK.K3.Pulse
+{
+    public enum PeriodKind { Daily=1, Weekly=2, Monthly=3 }
+
+    public enum CounterKind { Average, Total }
+
+    public class SaleSystemNotification
+    {
+        public int Filial { get; set; }
+        public string Product { get; set; }
+        public DateTimeOffset ContractSigningDateTime { get; set; }
+        public bool Increment { get; set; }
+    }
+
+    public class Counter
+    {
+        public string Product { get; set; }
+        public PeriodKind PeriodKind { get; set; }
+        public int Value { get; set; }
+        public CounterKind Kind { get; set; }
+        public DateTimeOffset PeriodStart { get; set; }
+    }
+
+    class CounterMessage
+    {
+        public string Product { get; set; }
+        public PeriodKind PeriodKind { get; set; }
+        public int Value { get; set; }
+    }
+
+    class IndexMessage
+    {
+        public string Product { get; set; }
+        public int Value { get; set; }
+    }
+
+    public class Index
+    {
+        public string Product { get; set; }
+        public PeriodKind PeriodKind { get; set; }
+        public int Value { get; set; }
+    }
+}
