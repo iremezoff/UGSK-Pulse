@@ -66,14 +66,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="day.png" />
-    <Content Include="scripts\d3.min.js" />
-    <Content Include="scripts\radialProgress.js" />
     <Content Include="style.css" />
     <Content Include="styles\style.css" />
     <Content Include="test.html" />
     <Content Include="Web.config" />
-    <Content Include="week.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -140,6 +140,9 @@ function radialProgress(parent) {
 
 
             enter.append("g").attr("class", "labels");
+              
+
+
             var label = svg.select(".labels").selectAll(".label").data(data);
             label.enter().append("text")
                 .attr("class","label")
@@ -159,7 +162,7 @@ function radialProgress(parent) {
             .attr("x",_width/2.2)
 			.attr('width', _diameter/15)
    .attr('height', _diameter/15)
-   .attr("xlink:href","week.png");
+   .attr("xlink:href","day.png");
    
    var imgs = svg.selectAll(".image2").data(data);
             imgs.enter()
@@ -168,7 +171,7 @@ function radialProgress(parent) {
             .attr("x",_width/2.2)
 			.attr('width', _diameter/15)
    .attr('height', _diameter/15)
-   .attr("xlink:href","day.png");
+   .attr("xlink:href","week.png");
 				
 				var label2 = svg.select(".labels").selectAll(".label2").data(data);
             label2.enter().append("text")
@@ -272,7 +275,9 @@ function radialProgress(parent) {
 					
 					label2.datum(Math.round(ratio2*100));
                 label2.transition().duration(_duration*(ratio2>1?1:0.5))
-                    .tween("text",labelTween2);
+                    .tween("text", labelTween2);
+
+
 					
             }
 

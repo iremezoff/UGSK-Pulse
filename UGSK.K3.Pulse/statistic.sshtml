@@ -1,0 +1,88 @@
+﻿var date = new Date();
+
+function currentDate() {
+				var dd = date.getDate();
+				var mm = date.getMonth()+1; 
+				var yyyy = date.getFullYear();
+				var hh = date.getHours();
+				var MM = date.getMinutes();
+				var ss = date.getSeconds();
+								 
+				return (hh<10?'0'+hh:hh)+':'+(MM<10?'0'+MM:MM)+':'+(ss<10?'0'+ss:ss)+' '+(dd<10?'0'+dd:dd)+'.'+(mm<10?'0'+mm:mm)+'.'+yyyy;                     
+            }
+
+
+
+            $.connection.hub.url = "@Model.ServiceAddress/signalr";
+
+			var product = 'uauto';
+
+			var div2=d3.select(document.getElementById('div2'));
+            
+			var rp2=radialProgress(document.getElementById('div2'))
+				.label(product)
+                .diameter(300)
+                .fontSize(5);
+
+            $.ajax({
+				method: "GET" ,
+				url: "@Model.ServiceAddress/api/counter" ,
+				data: { product: product }
+            })
+            .done(function( counter ) {
+				rp2.value(counter.Value);
+				$.ajax({
+					method: "GET" ,
+					url: "@Model.ServiceAddress/api/index" ,
+					data: { product: product }
+				})
+				.done(function( index ) {
+					rp2.maxValue(index.Value);
+					rp2.maxValue2(index.Value);
+
+					rp2.render();
+				});
+             }); 
+
+			 $.ajax({
+				method: "GET" ,
+				url: "@Model.ServiceAddress/api/counter" ,
+				data: { product: product, periodKind: 2, counterKind: 0} // Weekly, Average
+            })
+            .done(function( counter ) {
+				rp2.value2(counter.Value);				
+             }); 
+                     
+                     // Declare a proxy to reference the hub.
+                var chat = $.connection.statisticHub;
+                // Create a function that the hub can call to broadcast messages.
+                chat.client.broadcastCounter = function (counter) {
+					if(counter.Product!==product)
+						return;
+
+					// total daily counter
+					if (counter.Kind===1 && counter.PeriodKind===1) {
+						rp2.value(counter.Value);
+					}
+					// average weekly counter
+					if (counter.Kind===0 && counter.PeriodKind===2) {
+						rp2.value2(counter.Value);
+					}
+
+					rp2.label(currentDate());
+					rp2.render();
+                };
+
+                chat.client.broadcastIndex = function (product, value) {
+                rp2.maxValue(value).render();
+                };
+
+                $.connection.hub.start();
+                
+
+
+
+
+
+
+

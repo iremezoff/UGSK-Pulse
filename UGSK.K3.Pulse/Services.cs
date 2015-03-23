@@ -48,7 +48,7 @@ namespace UGSK.K3.Pulse
             }
 
             return _dataStorage.GetCounter(product, PeriodKind.Daily,
-                calendar.AddDays(periodStart.Value.DateTime, dayOffset), CounterKind.Total);
+                calendar.AddDays(periodStart.Value.DateTime, dayOffset), kind);
         }
 
     }
@@ -80,15 +80,18 @@ namespace UGSK.K3.Pulse
             {
                 Product = notification.Product,
                 Value = savedCounter.Value,
-                PeriodStart = counter.PeriodStart.Date
+                PeriodStart = counter.PeriodStart.Date,
+                Kind = CounterKind.Total,
+                PeriodKind = PeriodKind.Daily
             });
         }
     }
 
     class DefaultCounterProcessorAdapter : DefaultCounterProcessor
     {
-        public DefaultCounterProcessorAdapter(IBroadcaster broadcaster, IDataStorage storage, ILogger logger) : base(broadcaster, storage, logger)
-        {}
+        public DefaultCounterProcessorAdapter(IBroadcaster broadcaster, IDataStorage storage, ILogger logger)
+            : base(broadcaster, storage, logger)
+        { }
 
         public void Process(SaleSystemNotification notification)
         {

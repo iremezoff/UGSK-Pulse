@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -100,7 +101,15 @@ namespace UGSK.K3.Pulse
         {
             foreach (var product in await _dataStorage.GetProducts())
             {
-                await _broadcaster.SendCounter(new CounterMessage() { PeriodKind = PeriodKind.Daily, PeriodStart = passedDate, Product = product, Value = 0 });
+                await
+                    _broadcaster.SendCounter(new CounterMessage()
+                    {
+                        PeriodKind = PeriodKind.Daily,
+                        PeriodStart = passedDate,
+                        Product = product,
+                        Kind = CounterKind.Total,
+                        Value = 0
+                    });
             }
         }
     }
@@ -202,7 +211,8 @@ namespace UGSK.K3.Pulse
                     Product = product,
                     PeriodKind = PeriodKind.Weekly,
                     Value = average,
-                    PeriodStart = periodStart
+                    PeriodStart = periodStart,
+                    Kind = CounterKind.Average
                 });
             }
         }
@@ -237,8 +247,6 @@ namespace UGSK.K3.Pulse
                 return _container.GetInstance(type);
             }
         }
-
-
     }
 
     // ReSharper disable once UnusedMember.Global
@@ -260,20 +268,21 @@ namespace UGSK.K3.Pulse
     {
         public ScriptResourceNancyModule()
         {
-            Get["/sales-statistic"] = parameters =>
+            Get["sales-statistic"] = parameters =>
             {
                 var owinEnv = Context.GetOwinEnvironment();
 
                 var requestHeaders = (IDictionary<string, string[]>)owinEnv["owin.RequestHeaders"];
 
-                var uri = string.Format("{0}://{1}", owinEnv["owin.RequestScheme"], requestHeaders["Host"].First());
+                var uri = string.Format("{0}://{1}{2}", owinEnv["owin.RequestScheme"], requestHeaders["Host"].First(),
+                    owinEnv["owin.RequestPathBase"]);
 
                 var env = new StatisticGainerEnvironment { ServiceAddress = uri };
                 return Negotiate
                     .WithModel(env)
                     .WithHeader("Content-Type", "text/javascript")
                     .WithMediaRangeModel("text/javascript", env)
-                    .WithView("statistic.cshtml");
+                    .WithView("statistic");
             };
         }
     }
@@ -343,7 +352,7 @@ namespace UGSK.K3.Pulse
 
         public async Task SendCounter(CounterMessage counter)
         {
-            _hub.Clients.All.broadcastCounter(counter.Product, counter.Value);
+            _hub.Clients.All.broadcastCounter(counter);
         }
 
         public async Task SendIndex(IndexMessage index)

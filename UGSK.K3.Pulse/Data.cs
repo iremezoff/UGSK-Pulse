@@ -7,7 +7,7 @@ namespace UGSK.K3.Pulse
 {
     public enum PeriodKind { Daily = 1, Weekly = 2, Monthly = 3 }
 
-    public enum CounterKind { Average, Total }
+    public enum CounterKind { Average = 0, Total = 1 }
 
     public class SaleSystemNotification
     {
@@ -31,6 +31,7 @@ namespace UGSK.K3.Pulse
     {
         public string Product { get; set; }
         public PeriodKind PeriodKind { get; set; }
+        public CounterKind Kind { get; set; }
         public int Value { get; set; }
         public DateTime PeriodStart { get; set; }
     }
