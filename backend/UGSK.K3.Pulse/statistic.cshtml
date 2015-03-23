@@ -1,7 +1,7 @@
 ﻿@model StatisticGainerEnvironment
 
 $(function () {
-            $.connection.hub.url = "@Model.ServiceAddress/signalr";
+            $.connection.hub.url = "@Model.ServiceAddress/pulse/signalr";
 
             var div2 = d3.select(document.getElementById('div2'));
 
@@ -12,7 +12,7 @@ $(function () {
 
             $.ajax({
             method: "GET",
-            url: "@Model.ServiceAddress/api/counter",
+            url: "@Model.ServiceAddress/pulse/api/counter",
             data: { product: "uauto"}
             })
             .done(function( counter ) {
@@ -20,7 +20,7 @@ $(function () {
 
             $.ajax({
             method: "GET",
-            url: "@Model.ServiceAddress/api/index",
+            url: "@Model.ServiceAddress/pulse/api/index",
             data: { product: "uauto"}
             })
             .done(function( index ) {

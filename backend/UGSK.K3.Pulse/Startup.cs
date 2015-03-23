@@ -5,7 +5,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -13,16 +12,14 @@ using Dapper;
 using Hangfire;
 using Hangfire.SqlServer;
 using LightInject;
-using LightInject.Nancy;
-using LightInject.WebApi;
-using LightInject.WebApi;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Owin;
 using Microsoft.Owin.Cors;
 using Nancy;
+using Owin;
+using LightInject.Nancy;
 using Nancy.Bootstrapper;
 using Nancy.Owin;
-using Owin;
 
 [assembly: OwinStartup(typeof(UGSK.K3.Pulse.Startup))]
 
@@ -250,6 +247,12 @@ namespace UGSK.K3.Pulse
         protected override IServiceContainer GetServiceContainer()
         {
             return base.GetServiceContainer();
+        }
+
+        protected override void ApplicationStartup(IServiceContainer container, IPipelines pipelines)
+        {
+            StaticConfiguration.DisableErrorTraces = false;
+            base.ApplicationStartup(container, pipelines);
         }
     }
 
