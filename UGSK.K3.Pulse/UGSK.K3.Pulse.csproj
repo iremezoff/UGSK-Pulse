@@ -140,13 +140,31 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="adm\adm.module.js" />
+    <Content Include="adm\counter\config.route.js" />
+    <Content Include="adm\counter\counter.html" />
+    <Content Include="adm\counter\counter.module.js" />
+    <Content Include="adm\home.html" />
+    <Content Include="adm\index.html" />
+    <Content Include="adm\product\config.route.js" />
+    <Content Include="adm\product\list.controller.js" />
+    <Content Include="adm\product\list.html" />
+    <Content Include="adm\product\product.dataService.js" />
+    <Content Include="adm\product\product.html" />
+    <Content Include="adm\product\product.module.js" />
     <Content Include="app.js" />
+    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\day.png" />
     <Content Include="Content\week.png" />
     <Content Include="noext.js" />
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\Publish.pubxml" />
+    <Content Include="Scripts\angular-resource.min.js" />
+    <Content Include="Scripts\angular-ui-router.min.js" />
+    <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="statistic.sshtml" />
+    <Content Include="Scripts\angular.min.js.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
