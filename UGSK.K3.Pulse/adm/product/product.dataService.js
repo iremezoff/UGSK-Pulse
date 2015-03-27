@@ -1,3 +1,4 @@
 ﻿(function () {
-    angular.module('adm.product', []);
+    "use strict";
+    angular.module('adm.product');
 })();

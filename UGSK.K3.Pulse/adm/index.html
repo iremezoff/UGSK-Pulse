@@ -21,14 +21,8 @@
 
 			<nav class="navbar navbar-default" role="navigation">
 				<!-- Brand and toggle get grouped for better mobile display -->
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-						<span class="sr-only">Toggle navigation</span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand" href="#">Югория Пульс. Администратор</a>
+				<div class="navbar-header">					
+					<a class="navbar-brand" href="#" ui-sref="home">Югория Пульс. Администратор</a>
 				</div>
 
 				<!-- Collect the nav links, forms, and other content for toggling -->
@@ -56,7 +50,7 @@
 						<div class="col-md-6 col-md-offset-3">
 							<p class="text-center">
 								<small>
-									<a class="navbar-link" ui-sref="home">ГСК Югория © 2014</a>&nbsp;&bull;&nbsp;
+									<a class="navbar-link" ui-sref="home">ГСК Югория © 2014</a>
 									<br />
 								</small>
 							</p>
@@ -65,7 +59,7 @@
 				</div>
 			</footer>
 			<!-- jQuery -->
-			<script src="//code.jquery.com/jquery.js"></script>
+			<script src="/Scripts/jquery-1.11.1.js"></script>
 			<!-- Bootstrap JavaScript -->
 			<script src="/Scripts/bootstrap.min.js"></script>
 			<!-- Angular JavaScript -->
@@ -77,9 +71,11 @@
 			<script src="adm.module.js" type="text/javascript" charset="utf-8"></script>
 
 			<!-- module Products -->
-			<script src="product/product.dataService.js"></script>
-			<script src="product/list.controller.js"></script>
-			<script src="product/config.route.js"></script>
+            <script src="product/product.module.js"></script>            
+            <script src="product/config.route.js"></script>            
+			<script src="product/products.controller.js"></script>			
+            <script src="product/product.controller.js"></script>
+            <script src="product/product.dataService.js"></script>
 
 			<!-- module Counter -->
 			<script src="counter/counter.module.js"></script>

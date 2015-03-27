@@ -12,12 +12,16 @@
         $stateProvider
         .state("products", {
             url: "/products",
-            abstract: true,
-            templateUrl: 'product/list.html'
+            templateUrl: 'product/products.html',
+            controller: 'ProductsController',
+            controllerAs: "products"
+
         })
         .state("products.detail", {
             url: "/:code",
-            templateUrl : "product/product.html"
+            templateUrl: "product/product.html",
+            controller: "ProductController",
+            controllerAs: "product"
         });
     }
 })();

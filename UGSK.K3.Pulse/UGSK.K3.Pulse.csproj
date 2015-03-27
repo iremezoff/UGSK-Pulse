@@ -147,11 +147,12 @@
     <Content Include="adm\home.html" />
     <Content Include="adm\index.html" />
     <Content Include="adm\product\config.route.js" />
-    <Content Include="adm\product\list.controller.js" />
-    <Content Include="adm\product\list.html" />
+    <Content Include="adm\product\product.controller.js" />
+    <Content Include="adm\product\products.controller.js" />
     <Content Include="adm\product\product.dataService.js" />
     <Content Include="adm\product\product.html" />
     <Content Include="adm\product\product.module.js" />
+    <Content Include="adm\product\products.html" />
     <Content Include="app.js" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\day.png" />
@@ -163,8 +164,11 @@
     <Content Include="Scripts\angular-ui-router.min.js" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\jquery-1.11.1.js" />
+    <Content Include="Scripts\jquery-1.11.1.min.js" />
     <Content Include="statistic.sshtml" />
     <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="Scripts\angular-resource.min.js.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
