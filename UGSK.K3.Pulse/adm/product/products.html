@@ -3,7 +3,7 @@
         <section id="product-list-view">
             <div class="container">
                 <div class="row">
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <div class="col-3 col-sm-3 col-md-3 col-lg-3">
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead>
@@ -13,21 +13,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="" >
-                                        <td>1</td>
-                                        <td><a ui-sref="products.detail({code:'uauto'})">uauto</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td><a ui-sref="products.detail({code:'ifl'})">ifl</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td><a ui-sref="products.detail({code:'dealerp'})">dealer+</a></td>
+                                    <tr ng-repeat="item in products.items" >
+                                        <td>{{1+$index}}.</td>
+                                        <td><a ui-sref="products.detail({code:'{{item}}'})">{{item}}</a></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
+                        <button type="button" class="btn btn-default" data-ng-click="products.add()">Добавить</button>
                     </div>
                 </div>
             </div>

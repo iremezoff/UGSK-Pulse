@@ -1,11 +1,12 @@
 <section id="product-view">
 	<form action="" method="POST" role="form">
-		<legend>Изменение продукта</legend>
+		<legend>Изменение продукта <strong>{{product.code}}</strong></legend>
 
 		<div class="form-group">
 			<label for="">Наименование</label>
-			<input type="text" class="form-control" id="" placeholder="КАСКО">
+            <input type="text" class="form-control" placeholder="Имя продукта" data-ng-model="product.code">
 		</div>
-		<button type="submit" class="btn btn-primary">Сохранить</button>
+		<button type="button" class="btn btn-primary" data-ng-submit="product.add">Сохранить</button>
+		<button type="button" class="btn btn-danger">Удалить</button>
 	</form>
 </section>

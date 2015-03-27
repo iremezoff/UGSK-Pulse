@@ -1,6 +1,6 @@
 (function () {
     "use strict";
-    angular.module('adm.product', ['ui.router']).config(['$stateProvider', '$urlRouterProvider', configRoute]);
+    angular.module('adm.product').config(['$stateProvider', '$urlRouterProvider', configRoute]);
 
     function configRoute($stateProvider, $urlRouterProvider) {
 
@@ -15,7 +15,6 @@
             templateUrl: 'product/products.html',
             controller: 'ProductsController',
             controllerAs: "products"
-
         })
         .state("products.detail", {
             url: "/:code",
