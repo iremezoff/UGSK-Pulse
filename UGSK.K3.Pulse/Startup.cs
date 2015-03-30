@@ -364,10 +364,12 @@ namespace UGSK.K3.Pulse
     public interface IDataStorage
     {
         Task<IEnumerable<string>> GetProducts();
+        Task<IEnumerable<Index>> GetIndexes();
         Task<Counter> GetCounter(string product, PeriodKind periodKind, DateTimeOffset periodStart, CounterKind counterKind);
         Task<Index> GetIndex(string product);
         Task<Counter> UpdateCounter(Counter counter, int delta);
         Task<Index> UpdateIndex(Index index);
+        Task<Index> CreateIndex(Index index);
     }
 
     public interface ICounterQuery
@@ -406,6 +408,12 @@ namespace UGSK.K3.Pulse
             };
         }
 
+        public async Task<IEnumerable<Index>> GetIndexes()
+        {
+            return await _conn.QueryAsync<Index>("select * from [Index]");
+        }
+
+
         public async Task<Index> GetIndex(string product)
         {
             var index = (await
@@ -436,6 +444,12 @@ namespace UGSK.K3.Pulse
 
             return await GetIndex(index.Product);
 
+        }
+
+        public async Task<Index> CreateIndex(Index index)
+        {
+            return await await _conn.ExecuteAsync("insert [Index] (Product, Value) VALUES (@product, @value)",
+                new { index.Product, index.Value }).ContinueWith(t => GetIndex(index.Product));
         }
     }
 }

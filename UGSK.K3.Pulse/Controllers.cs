@@ -42,6 +42,11 @@ namespace UGSK.K3.Pulse
             _processor = processor;
         }
 
+        public async Task<IEnumerable<Index>> Get()
+        {
+            return await _dataStorage.GetIndexes();
+        }
+
         public async Task<Index> Get(string product, PeriodKind periodKind = PeriodKind.Daily)
         {
             return await _dataStorage.GetIndex(product);
@@ -51,7 +56,14 @@ namespace UGSK.K3.Pulse
         {
             await _processor.Process(index);
 
-            return StatusCode(HttpStatusCode.Accepted);
+            return StatusCode(HttpStatusCode.Created);
+        }
+
+        public async Task<IHttpActionResult> Put(Index index)
+        {
+            await _dataStorage.UpdateIndex(index);
+            return StatusCode(HttpStatusCode.OK);
+
         }
     }
 

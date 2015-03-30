@@ -1,21 +1,29 @@
 <section id="products-view">
-    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
         <section id="product-list-view">
             <div class="container">
                 <div class="row">
-                    <div class="col-3 col-sm-3 col-md-3 col-lg-3">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Код продукта</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="item in products.items" >
-                                        <td>{{1+$index}}.</td>
-                                        <td><a ui-sref="products.detail({code:'{{item}}'})">{{item}}</a></td>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Код продукта</th>
+                                    <th>План</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in products.items" >
+                                    <td>{{1+$index}}.</td>
+                                    <td>
+                                    <input type="text" class="form-control" required="required" data-ng-model="item.code">
+                                    </td>
+                                    <td><input type="number" class="form-control" min="0" max="1000" step="10" required="required" data-ng-model="item.plan"></td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm btn-info">Save</button>
                                     </tr>
                                 </tbody>
                             </table>
@@ -23,8 +31,6 @@
                         <button type="button" class="btn btn-default" data-ng-click="products.add()">Добавить</button>
                     </div>
                 </div>
-            </div>
-        </section>
-    </div>
-    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5" ui-view></div>
-</section>
+            </section>
+        </div>
+    </section>

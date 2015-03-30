@@ -112,7 +112,7 @@ namespace UGSK.K3.Pulse
 
         public async Task Process(Index index)
         {
-            var savedCounter = await _storage.UpdateIndex(index);
+            var savedCounter = await _storage.CreateIndex(index);
 
             await _broadcaster.SendIndex(new IndexMessage() { Product = index.Product, Value = savedCounter.Value });
         }
