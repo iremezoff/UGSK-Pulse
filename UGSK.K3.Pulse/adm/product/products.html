@@ -19,9 +19,9 @@
                                 <tr ng-repeat="item in products.items" >
                                     <td>{{1+$index}}.</td>
                                     <td>
-                                    <input type="text" class="form-control" required="required" data-ng-model="item.code">
+                                    <input type="text" class="form-control" required="required" data-ng-model="item.Product">
                                     </td>
-                                    <td><input type="number" class="form-control" min="0" max="1000" step="10" required="required" data-ng-model="item.plan"></td>
+                                    <td><input type="number" class="form-control" min="0" max="1000" step="10" required="required" data-ng-model="item.Value"></td>
                                     <td>
                                         <button type="button" class="btn btn-sm btn-info">Save</button>
                                     </tr>

@@ -54,7 +54,15 @@ namespace UGSK.K3.Pulse
 
         public async Task<IHttpActionResult> Post(Index index)
         {
-            await _processor.Process(index);
+            try
+            {
+                await _processor.Process(index);
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                return StatusCode(HttpStatusCode.Conflict);
+            }
+            
 
             return StatusCode(HttpStatusCode.Created);
         }

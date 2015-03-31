@@ -147,10 +147,8 @@
     <Content Include="adm\home.html" />
     <Content Include="adm\index.html" />
     <Content Include="adm\product\config.route.js" />
-    <Content Include="adm\product\product.controller.js" />
     <Content Include="adm\product\products.controller.js" />
     <Content Include="adm\product\product.service.js" />
-    <Content Include="adm\product\product.html" />
     <Content Include="adm\product\product.module.js" />
     <Content Include="adm\product\products.html" />
     <Content Include="app.js" />

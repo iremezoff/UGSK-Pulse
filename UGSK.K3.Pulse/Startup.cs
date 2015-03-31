@@ -367,6 +367,7 @@ namespace UGSK.K3.Pulse
         Task<IEnumerable<Index>> GetIndexes();
         Task<Counter> GetCounter(string product, PeriodKind periodKind, DateTimeOffset periodStart, CounterKind counterKind);
         Task<Index> GetIndex(string product);
+        Task<Index> GetIndex(int id);
         Task<Counter> UpdateCounter(Counter counter, int delta);
         Task<Index> UpdateIndex(Index index);
         Task<Index> CreateIndex(Index index);
@@ -408,21 +409,6 @@ namespace UGSK.K3.Pulse
             };
         }
 
-        public async Task<IEnumerable<Index>> GetIndexes()
-        {
-            return await _conn.QueryAsync<Index>("select * from [Index]");
-        }
-
-
-        public async Task<Index> GetIndex(string product)
-        {
-            var index = (await
-                _conn.QueryAsync<Index>(
-                    "select top 1 * from [Index] where Product=@product",
-                    new { product })).SingleOrDefault();
-            return index ?? new Index { Product = product, Value = 100 };
-        }
-
         public async Task<Counter> UpdateCounter(Counter counter, int delta)
         {
             await _conn.ExecuteAsync(
@@ -436,14 +422,38 @@ namespace UGSK.K3.Pulse
             return await GetCounter(counter.Product, counter.PeriodKind, counter.PeriodStart.Date, counter.Kind);
         }
 
+
+        public async Task<IEnumerable<Index>> GetIndexes()
+        {
+            return await _conn.QueryAsync<Index>("select Id,Product,Value from [Index]");
+        }
+
+        public async Task<Index> GetIndex(int id)
+        {
+            var index = (await
+                _conn.QueryAsync<Index>(
+                    "select * from [Index] where Id=@Id",
+                    new { id })).SingleOrDefault();
+            return index;
+        }    
+
+        public async Task<Index> GetIndex(string product)
+        {
+            var index = (await
+                _conn.QueryAsync<Index>(
+                    "select top 1 * from [Index] where Product=@product",
+                    new { product })).SingleOrDefault();
+            return index ?? new Index { Product = product, Value = 100 };
+        }
+
+        
         public async Task<Index> UpdateIndex(Index index)
         {
             await _conn.ExecuteAsync(
-            "update [Index] set Value=@value where Product=@product",
-            new { index.Product, index.Value });
+            "update [Index] set Product=@Product, Value=@value where Id=@Id",
+            new { Id = index.Id, Product = index.Product, Value = index.Value });
 
             return await GetIndex(index.Product);
-
         }
 
         public async Task<Index> CreateIndex(Index index)
@@ -451,5 +461,6 @@ namespace UGSK.K3.Pulse
             return await await _conn.ExecuteAsync("insert [Index] (Product, Value) VALUES (@product, @value)",
                 new { index.Product, index.Value }).ContinueWith(t => GetIndex(index.Product));
         }
-    }
+
+        }
 }

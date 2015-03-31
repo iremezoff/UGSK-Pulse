@@ -44,6 +44,7 @@ namespace UGSK.K3.Pulse
 
     public class Index
     {
+        public int Id { get; set; }
         public string Product { get; set; }
         public int Value { get; set; }
     }

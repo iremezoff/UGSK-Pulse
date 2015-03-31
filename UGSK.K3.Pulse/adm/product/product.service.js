@@ -5,6 +5,6 @@
 
     function ProductService($resource) {
         var actions = { $update: { method: "PUT"} };
-        return $resource('/api/Index/(:id)', { code: "@code" }, actions);
+        return $resource('/api/Index/:id', { id: "@id" }, actions);
     }
 })();
