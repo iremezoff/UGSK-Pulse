@@ -48,6 +48,13 @@ namespace UGSK.K3.Pulse
             var config = new HttpConfiguration();
             config.MapHttpAttributeRoutes();
             config.Routes.MapHttpRoute("default", "api/{Controller}");
+            
+            config.Routes.MapHttpRoute(
+                name: "rest",
+                routeTemplate: "api/{controller}/{id}",
+                defaults: new { id = RouteParameter.Optional },
+                constraints: new { id = @"^[0-9]+$" });
+
             config.EnableCors(new EnableCorsAttribute("*", "*", "get"));
 
             container.EnableWebApi(config);
@@ -66,7 +73,7 @@ namespace UGSK.K3.Pulse
                 conf.UseActivator(new ContainerJobActivator(container));
             });
 
-            InitializeJobs();            
+            InitializeJobs();
 
             app.UseNancy(options =>
               options.PerformPassThrough = context =>
@@ -371,6 +378,7 @@ namespace UGSK.K3.Pulse
         Task<Counter> UpdateCounter(Counter counter, int delta);
         Task<Index> UpdateIndex(Index index);
         Task<Index> CreateIndex(Index index);
+        Task DeleteIndex(int id);
     }
 
     public interface ICounterQuery
@@ -380,5 +388,5 @@ namespace UGSK.K3.Pulse
             CounterKind kind = CounterKind.Total);
     }
 
-    
+
 }

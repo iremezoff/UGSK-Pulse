@@ -115,6 +115,8 @@ namespace UGSK.K3.Pulse
             var savedCounter = await _storage.CreateIndex(index);
 
             await _broadcaster.SendIndex(new IndexMessage() { Product = index.Product, Value = savedCounter.Value });
+
+            index.Id = savedCounter.Id;
         }
     }
 }

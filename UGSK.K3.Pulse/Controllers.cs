@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Net;
 using System.Threading.Tasks;
-using System.Web.Http;
 using Hangfire;
 using System.Linq;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
 
 namespace UGSK.K3.Pulse
 {
@@ -31,9 +32,9 @@ namespace UGSK.K3.Pulse
             return StatusCode(HttpStatusCode.Accepted);
         }
     }
-        
+
     public class IndexController : ApiController
-    {        
+    {
         private readonly IDataStorage _dataStorage;
         private readonly IIndexProcessor _processor;
 
@@ -47,6 +48,11 @@ namespace UGSK.K3.Pulse
         {
             var result = await _dataStorage.GetIndexes();
             return result;
+        }
+
+        public async Task<Index> Get(int id)
+        {
+            return await _dataStorage.GetIndex(id);
         }
 
         public async Task<Index> Get(string product, PeriodKind periodKind = PeriodKind.Daily)
@@ -64,16 +70,30 @@ namespace UGSK.K3.Pulse
             {
                 return StatusCode(HttpStatusCode.Conflict);
             }
-            
+            StatusCode(HttpStatusCode.Created);
 
-            return StatusCode(HttpStatusCode.Created);
+            return CreatedAtRoute("rest", new { Id = index.Id }, index);
         }
 
         public async Task<IHttpActionResult> Put(Index index)
         {
             await _dataStorage.UpdateIndex(index);
             return StatusCode(HttpStatusCode.OK);
+        }
 
+        public async Task<IHttpActionResult> Delete(int id)
+        {
+
+            var index = await _dataStorage.GetIndex(id);
+
+            if (index == null)
+            {
+                return NotFound();
+            }
+
+            await _dataStorage.DeleteIndex(id);
+
+            return Ok(index);
         }
     }
 

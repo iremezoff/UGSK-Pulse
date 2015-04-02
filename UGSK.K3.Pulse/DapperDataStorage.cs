@@ -91,5 +91,11 @@ namespace UGSK.K3.Pulse
             return await await _conn.ExecuteAsync("insert [Index] (Product, Value) VALUES (@product, @value)",
                 new { index.Product, index.Value }).ContinueWith(t => GetIndex(index.Product));
         }
+
+
+        public async Task DeleteIndex(int id)
+        {
+            await _conn.ExecuteAsync("delete from [Index] where Id=@Id", new { Id = id });
+        }
     }
 }
