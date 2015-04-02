@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Hangfire;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace UGSK.K3.Pulse
@@ -30,9 +31,9 @@ namespace UGSK.K3.Pulse
             return StatusCode(HttpStatusCode.Accepted);
         }
     }
-
+        
     public class IndexController : ApiController
-    {
+    {        
         private readonly IDataStorage _dataStorage;
         private readonly IIndexProcessor _processor;
 
@@ -44,7 +45,8 @@ namespace UGSK.K3.Pulse
 
         public async Task<IEnumerable<Index>> Get()
         {
-            return await _dataStorage.GetIndexes();
+            var result = await _dataStorage.GetIndexes();
+            return result;
         }
 
         public async Task<Index> Get(string product, PeriodKind periodKind = PeriodKind.Daily)

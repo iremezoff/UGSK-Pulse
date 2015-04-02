@@ -1,10 +1,10 @@
 ﻿(function () {
     "use strict";
     angular.module('adm.product')
-    .factory('ProductService', ['$resource', 'moduleConfiguration', ProductService ]);
+    .factory('ProductService', ['$resource', 'productModuleConfiguration', ProductService]);
 
-    function ProductService($resource, moduleConfiguration) {
+    function ProductService($resource, productModuleConfiguration) {
         var actions = { $update: { method: "PUT"} };
-        return $resource(moduleConfiguration.IndexUrl + '/:id', { id: "@id" }, actions);
+        return $resource(productModuleConfiguration.IndexUrl + '/:id', { id: "@id" }, actions);
     }
 })();
