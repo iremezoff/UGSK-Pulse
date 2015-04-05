@@ -18,6 +18,7 @@ require(['radial', 'dc3', 'jquery'], function () {
         console.log('loaded2!');
         require(['noext!signalr/hubs'], function() {
             console.log('loaded3!');
+            jQuery.connection.hub.url = "http://localhost:40438/signalr";
             require(['noext!sales-statistic']);
         });
     });

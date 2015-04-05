@@ -21,19 +21,21 @@ constants: {
 }
 };
 
-ugskPulse.on = function (domDiv, product, externalDiameter, fontSize, jq) {
+//ugskPulse.on = function (domDiv, product, externalDiameter, fontSize, jq) {
 
-	        jq.connection.hub.url = "@Model.ServiceAddress/signalr";
+	        jQuery.connection.hub.url = "@Model.ServiceAddress/signalr";
 
-			var div2=d3.select(domDiv);
+			var div2=d3.select(document.getElementById('div2'));
 
-			var rp2=radialProgress(domDiv)
+			var product = 'uauto';
+
+			var rp2=radialProgress(document.getElementById('div2'))
 				.label(product)
                 .diameter(externalDiameter)
                 .fontSize(fontSize);
 
 				                     // Declare a proxy to reference the hub.
-                var chat = jq.connection.statisticHub;
+                var chat = jQuery.connection.statisticHub;
                 // Create a function that the hub can call to broadcast messages.
                 chat.client.broadcastCounter = function (counter) {
 					if(counter.Product!==product)
@@ -95,7 +97,7 @@ ugskPulse.on = function (domDiv, product, externalDiameter, fontSize, jq) {
 
 //				return essential;
 
-}
+//}
                 
 
 

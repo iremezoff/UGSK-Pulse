@@ -62,7 +62,7 @@ namespace UGSK.K3.Pulse
                 conf.UseActivator(new ContainerJobActivator(container));
             });
 
-            InitializeJobs();
+//            InitializeJobs();
 
             app.UseNancy(options =>
               options.PerformPassThrough = context =>
