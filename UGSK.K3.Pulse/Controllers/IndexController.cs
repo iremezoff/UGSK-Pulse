@@ -23,6 +23,10 @@ namespace UGSK.K3.Pulse.Controllers
 
         public async Task<IHttpActionResult> Post(Index index)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             await _processor.Process(index);
 
             return StatusCode(HttpStatusCode.Accepted);

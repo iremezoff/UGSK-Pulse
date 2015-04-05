@@ -1,18 +1,26 @@
 using System;
+using System.Threading.Tasks;
 using UGSK.K3.Pulse.Infrastructure;
 
 namespace UGSK.K3.Pulse.Processors.SyncAdapters
 {
-    class AverageWeekStatisticDailyProcessorAdapter : AverageWeekStatisticDailyProcessor
+    class CommonProcessorAdapter<T> : IStatisticProcessor where T : IStatisticProcessor
     {
-        public AverageWeekStatisticDailyProcessorAdapter(IDataStorage dataStorage, IBroadcaster broadcaster)
-            : base(dataStorage, broadcaster)
+        private readonly T _innerProcessor;
+
+        public CommonProcessorAdapter(T innerProcessor)
         {
+            _innerProcessor = innerProcessor;
         }
 
         public void Process(DateTime dateForHandle)
         {
-            ProcessAsync(dateForHandle).Wait();
+            _innerProcessor.ProcessAsync(dateForHandle).Wait();
+        }
+
+        public async Task ProcessAsync(DateTime dateForHandle)
+        {
+            await _innerProcessor.ProcessAsync(dateForHandle);
         }
     }
 }

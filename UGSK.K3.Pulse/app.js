@@ -7,6 +7,7 @@
         'signalr-jquery': 'Scripts/jquery.signalR-2.2.0.min',
         noext: 'noext'
     }
+    
 });
 
 

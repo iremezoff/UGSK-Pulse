@@ -4,7 +4,7 @@ using UGSK.K3.Pulse.Infrastructure;
 
 namespace UGSK.K3.Pulse.Processors
 {
-    public class PreviousDateStatCleaner
+    public class PreviousDateStatCleaner : IStatisticProcessor
     {
         private readonly IBroadcaster _broadcaster;
         private readonly IDataStorage _dataStorage;

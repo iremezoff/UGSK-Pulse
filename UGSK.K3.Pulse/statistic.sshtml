@@ -11,19 +11,57 @@ function currentDate() {
 				return (hh<10?'0'+hh:hh)+':'+(MM<10?'0'+MM:MM)+':'+(ss<10?'0'+ss:ss)+' '+(dd<10?'0'+dd:dd)+'.'+(mm<10?'0'+mm:mm)+'.'+yyyy;                     
             }
 
+var ugskPulse = {
 
+constants: {
+    DailyPeriod: 1,
+	WeeklyPeriod: 2,
+	TotalCounter: 1,
+	AverageCounter: 0
+}
+};
 
-            $.connection.hub.url = "@Model.ServiceAddress/signalr";
+ugskPulse.on = function (domDiv, product, externalDiameter, fontSize, jq) {
 
-			var product = 'uauto';
+	        jq.connection.hub.url = "@Model.ServiceAddress/signalr";
 
-			var div2=d3.select(document.getElementById('div2'));
-            
-			var rp2=radialProgress(document.getElementById('div2'))
+			var div2=d3.select(domDiv);
+
+			var rp2=radialProgress(domDiv)
 				.label(product)
-                .diameter(300)
-                .fontSize(5);
+                .diameter(externalDiameter)
+                .fontSize(fontSize);
 
+				                     // Declare a proxy to reference the hub.
+                var chat = jq.connection.statisticHub;
+                // Create a function that the hub can call to broadcast messages.
+                chat.client.broadcastCounter = function (counter) {
+					if(counter.Product!==product)
+						return;
+
+					// total daily counter
+					if (counter.Kind===ugskPulse.constants.TotalCounter && counter.PeriodKind===ugskPulse.constants.DailyPeriod) {
+						rp2.value(counter.Value);
+					}
+					// average weekly counter
+					if (counter.Kind===ugskPulse.constants.AverageCounter && counter.PeriodKind===ugskPulse.constants.WeeklyPeriod) {
+						rp2.value2(counter.Value);
+					}
+
+					rp2.label(currentDate());
+					rp2.render();
+                };
+
+                chat.client.broadcastIndex = function (product, value) {
+                rp2.maxValue(value).render();
+                };
+
+                $.connection.hub.start();
+
+				essential();
+
+	function essential() {
+	
             $.ajax({
 				method: "GET" ,
 				url: "@Model.ServiceAddress/api/counter" ,
@@ -51,33 +89,13 @@ function currentDate() {
             })
             .done(function( counter ) {
 				rp2.value2(counter.Value);				
-             }); 
-                     
-                     // Declare a proxy to reference the hub.
-                var chat = $.connection.statisticHub;
-                // Create a function that the hub can call to broadcast messages.
-                chat.client.broadcastCounter = function (counter) {
-					if(counter.Product!==product)
-						return;
+             });                     
 
-					// total daily counter
-					if (counter.Kind===1 && counter.PeriodKind===1) {
-						rp2.value(counter.Value);
-					}
-					// average weekly counter
-					if (counter.Kind===0 && counter.PeriodKind===2) {
-						rp2.value2(counter.Value);
-					}
+				}
 
-					rp2.label(currentDate());
-					rp2.render();
-                };
+//				return essential;
 
-                chat.client.broadcastIndex = function (product, value) {
-                rp2.maxValue(value).render();
-                };
-
-                $.connection.hub.start();
+}
                 
 
 

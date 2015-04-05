@@ -33,8 +33,9 @@ namespace UGSK.K3.Pulse
             container.Register<IBroadcaster, SignalRBroadcaster>(new PerRequestLifeTime());
             container.Register<IDataStorage, DapperDataStorage>(new PerScopeLifetime());
             container.Register<ICounterQuery, CounterQuery>(new PerScopeLifetime());
-            container.Register<AverageWeekStatisticDailyProcessorAdapter, AverageWeekStatisticDailyProcessorAdapter>(new PerRequestLifeTime());
-            container.Register<PreviousDateStatCleanerAdapter, PreviousDateStatCleanerAdapter>(new PerRequestLifeTime());
+            container.Register<AverageWeekStatisticDailyProcessor, AverageWeekStatisticDailyProcessor>(new PerRequestLifeTime());
+            container.Register<PreviousDateStatCleaner, PreviousDateStatCleaner>(new PerRequestLifeTime());
+            container.Register(typeof(CommonProcessorAdapter<>), typeof(CommonProcessorAdapter<>), new PerRequestLifeTime());
 
             container.RegisterApiControllers();
 
@@ -70,9 +71,9 @@ namespace UGSK.K3.Pulse
 
         public static void InitializeJobs()
         {
-            RecurringJob.AddOrUpdate<AverageWeekStatisticDailyProcessorAdapter>(AverageWeekStatisticDailyProcessor.Name, p => p.Process(DateTime.Now.AddDays(-1).Date), "0 1 * * *");
+            RecurringJob.AddOrUpdate<CommonProcessorAdapter<AverageWeekStatisticDailyProcessor>>(AverageWeekStatisticDailyProcessor.Name, p => p.Process(DateTime.Now.AddDays(-1).Date), "0 1 * * *");
 
-            RecurringJob.AddOrUpdate<PreviousDateStatCleanerAdapter>(PreviousDateStatCleaner.Name, p => p.Process(DateTime.Now.AddDays(-1).Date), "35 * * * *");
+            RecurringJob.AddOrUpdate<CommonProcessorAdapter<PreviousDateStatCleaner>>(PreviousDateStatCleaner.Name, p => p.Process(DateTime.Now.AddDays(-1).Date), "35 * * * *");
 
             // perform to update statistic if it has not been updated (worker failed, app wasn't run early)
             RecurringJob.Trigger(AverageWeekStatisticDailyProcessor.Name);

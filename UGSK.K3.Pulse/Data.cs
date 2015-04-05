@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -46,9 +47,12 @@ namespace UGSK.K3.Pulse
 
     public class Index
     {
+        [Required]
         public string Product { get; set; }
         public int Value { get; set; }
+        [Required]
         public DateTimeOffset ActiveStart { get; set; }
+        [Required]
         public IndexKind IndexKind { get; set; }
     }
 }

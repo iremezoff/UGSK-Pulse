@@ -5,7 +5,7 @@ using UGSK.K3.Pulse.Infrastructure;
 
 namespace UGSK.K3.Pulse.Processors
 {
-    public class AverageWeekStatisticDailyProcessor
+    public class AverageWeekStatisticDailyProcessor : IStatisticProcessor
     {
         public const string Name = "daily for week average";
 
@@ -94,5 +94,10 @@ namespace UGSK.K3.Pulse.Processors
                 });
             }
         }
+    }
+
+    public interface IStatisticProcessor
+    {
+        Task ProcessAsync(DateTime dateForHandle);
     }
 }

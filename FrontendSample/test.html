@@ -49,8 +49,21 @@
     </div>
 
     
-    <script type="text/javascript" src="http://localhost:40438/Scripts/require.js" data-main="sale-statistic"></script>
+    <script type="text/javascript" src="http://localhost:40438/Scripts/require.js" data-main="http://localhost:40438/app.js"></script>
+<script type="text/javascript">
+    //$(document).ready(function() {
 
+
+    requirejs(['noext!sales-statistic'],
+function (stat) {
+
+
+
+    ugskPulse.on(document.getElementById('div2'), 'uauto', 300, 5, jQuery).go();
+});
+        
+    //} );
+</script>
     <div id="test"></div>
 </body>
 </html>
