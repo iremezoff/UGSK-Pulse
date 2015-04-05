@@ -1,7 +1,7 @@
 ﻿(function () {
     "use strict";
 
-    angular.module("adm", ["ui.router", "adm.product", "adm.counter"])
+    angular.module("adm", ["ui.router", "adm.product", "adm.counter", "adm.serverMock"])
     .constant("version", "1.0.0")
     .run(['$rootScope', '$state', '$stateParams', function ($rootScope, $state, $stateParams) {
         $rootScope.$state = $state;

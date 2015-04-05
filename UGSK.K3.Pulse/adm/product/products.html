@@ -17,18 +17,19 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="item in products.items" >
-                                    <td>{{1+$index}}.</td>
+                                    <td data-ng-model="item.Id"></td>
                                     <td>
                                     <input type="text" class="form-control" required="required" data-ng-model="item.Product">
                                     </td>
                                     <td><input type="number" class="form-control" min="0" max="1000" step="10" required="required" data-ng-model="item.Value"></td>
                                     <td>
-                                        <button type="button" class="btn btn-sm btn-info" ng-click="products.update(item)">Save</button>
+                                        <button type="button" class="btn btn-sm btn-danger" ng-click="products.remove(item)">Delete</button>                                       
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                         <button type="button" class="btn btn-default" data-ng-click="products.add()">Добавить</button>
+                        <button type="button" class="btn btn-sm btn-info" ng-click="products.saveAll()">SaveAll</button>
                     </div>
                 </div>
             </section>

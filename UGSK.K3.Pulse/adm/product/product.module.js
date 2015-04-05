@@ -1,6 +1,6 @@
 ﻿(function () {
     "use strict";
-    angular.module('adm.product', ['ui.router', 'ngResource'])
+    angular.module('adm.product', ['ui.router', 'ngResource','adm.serverMock'])
     .config(['$resourceProvider', function ($resourceProvider) {
         // Don't strip trailing slashes from calculated URLs
         $resourceProvider.defaults.stripTrailingSlashes = false;

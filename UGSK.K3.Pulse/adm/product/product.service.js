@@ -1,7 +1,7 @@
 ﻿(function () {
     "use strict";
     angular.module('adm.product')
-    .factory('ProductService', ['$resource', 'productModuleConfiguration', ProductService]);
+    .factory('Product', ['$resource', 'productModuleConfiguration', ProductService]);
 
     function ProductService($resource, productModuleConfiguration) {
         var actions = { $update: { method: "PUT"} };
