@@ -44,8 +44,7 @@ namespace UGSK.K3.Pulse.AppServices.Impl
                     break;
             }
 
-            return _dataStorage.GetCounter(product, PeriodKind.Daily,
-                calendar.AddDays(periodStart.Value.DateTime, dayOffset), kind);
+            return _dataStorage.GetCounter(product, periodKind, calendar.AddDays(periodStart.Value.DateTime, dayOffset), kind);
         }
 
     }
