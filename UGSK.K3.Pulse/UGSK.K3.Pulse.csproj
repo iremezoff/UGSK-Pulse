@@ -169,12 +169,34 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers.cs" />
+    <Compile Include="AppServices\Impl\CounterQuery.cs" />
+    <Compile Include="AppServices\Impl\DefaultCounterProcessor.cs" />
+    <Compile Include="AppServices\Impl\DefaultCounterProcessorAdapter.cs" />
+    <Compile Include="Processors\AverageWeekStatisticDailyProcessor.cs" />
+    <Compile Include="Processors\SyncAdapters\AverageWeekStatisticDailyProcessorAdapter.cs" />
+    <Compile Include="Config\Bootstrapper.cs" />
+    <Compile Include="Config\ContainerJobActivator.cs" />
+    <Compile Include="Controllers\IndexController.cs" />
+    <Compile Include="Controllers\CounterController.cs" />
+    <Compile Include="Infrastructure\IBroadcaster.cs" />
+    <Compile Include="AppServices\ICounterProcessor.cs" />
+    <Compile Include="AppServices\ICounterQuery.cs" />
+    <Compile Include="Infrastructure\IDataStorage.cs" />
+    <Compile Include="AppServices\IIndexProcessor.cs" />
+    <Compile Include="Infrastructure\ILogger.cs" />
+    <Compile Include="Infrastructure\Impl\DapperDataStorage.cs" />
     <Compile Include="Data.cs" />
+    <Compile Include="Infrastructure\Impl\DefaultLogger.cs" />
+    <Compile Include="Processors\PreviousDateStatCleaner.cs" />
+    <Compile Include="Processors\SyncAdapters\PreviousDateStatCleanerAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services.cs" />
+    <Compile Include="AppServices\Impl\DefaultIndexProcessor.cs" />
+    <Compile Include="Infrastructure\Impl\SignalRBroadcaster.cs" />
+    <Compile Include="Config\ScriptResourceNancyModule.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Infrastructure\StatisticHub.cs" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

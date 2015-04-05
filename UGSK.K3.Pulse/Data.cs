@@ -9,6 +9,8 @@ namespace UGSK.K3.Pulse
 
     public enum CounterKind { Average = 0, Total = 1 }
 
+    public enum IndexKind { Normal, Super }
+
     public class SaleSystemNotification
     {
         public int Filial { get; set; }
@@ -46,5 +48,7 @@ namespace UGSK.K3.Pulse
     {
         public string Product { get; set; }
         public int Value { get; set; }
+        public DateTimeOffset ActiveStart { get; set; }
+        public IndexKind IndexKind { get; set; }
     }
 }
