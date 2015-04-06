@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru" ng-app="adm">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Югория Пульс</title>
+
+	<!-- Bootstrap CSS -->
+	<link href="/Content//bootstrap.min.css" rel="stylesheet">
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+			<![endif]-->
+		</head>
+		<body>
+			<header id="header">
+
+			<nav class="navbar navbar-default" role="navigation">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#" ui-sref="home">Югория Пульс. Администратор</a>
+				</div>
+
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse navbar-ex1-collapse">
+					<ul class="nav navbar-nav">
+						<li><a href="#" ui-sref="products">Продукты</a></li>
+						<li><a href="#" ui-sref="counter">Корректировка показателей</a></li>
+						<!--<li><a href="#">Установить план продаж</a></li>-->
+					</ul>
+				</div><!-- /.navbar-collapse -->
+			</nav>
+			</header><!-- /header -->
+
+			<div id="body" class="container" style="margin-top: 60px; margin-bottom:60px;">
+				<div class="row">
+					<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+						<div class="container" ui-view data-ng-view></div>
+					</div>
+				</div>
+			</div>
+
+			<footer class="navbar navbar-default navbar-fixed-bottom">
+				<div class="container ">
+					<div class="row">
+						<div class="col-md-6 col-md-offset-3">
+							<p class="text-center">
+								<small>
+									<a class="navbar-link" ui-sref="home">ГСК Югория © 2014</a>
+									<br />
+								</small>
+							</p>
+						</div>
+					</div>
+				</div>
+			</footer>
+			<!-- jQuery -->
+			<script src="/Scripts/jquery-1.11.1.js"></script>
+			<!-- Bootstrap JavaScript -->
+			<script src="/Scripts/bootstrap.min.js"></script>
+			<!-- Angular JavaScript -->
+			<script src="/Scripts/angular.min.js"></script>
+			<script src="/Scripts/angular-resource.min.js"></script>
+			<script src="/Scripts/angular-ui-router.min.js"></script>
+			<script src="/Scripts/angular-mocks.js"></script>
+
+            <!--Moment javascript-->
+            <script src="/Scripts/moment.min.js"></script>
+
+			<!-- Application Javascripts -->
+			<script src="adm.module.js" type="text/javascript" charset="utf-8"></script>
+			<script src="adm.serverMock.js" type="text/javascript" charset="utf-8"></script>
+            <script src="core/formatDate.directive.js" type="text/javascript" charset="utf-8"></script>
+
+
+			<!-- module Products -->
+            <script src="product/product.module.js"></script>
+            <script src="product/config.route.js"></script>
+			<script src="product/products.controller.js"></script>
+            <script src="product/product.service.js"></script>
+
+			<!-- module Counter -->
+			<script src="counter/counter.module.js"></script>
+			<script src="counter/config.route.js"></script>
+		</body>
+		</html>

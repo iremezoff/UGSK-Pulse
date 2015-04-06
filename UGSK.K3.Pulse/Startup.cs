@@ -44,6 +44,14 @@ namespace UGSK.K3.Pulse
             var config = new HttpConfiguration();
             config.MapHttpAttributeRoutes();
             config.Routes.MapHttpRoute("default", "api/{Controller}");
+
+            config.Routes.MapHttpRoute(
+                name: "rest",
+                routeTemplate: "api/{controller}/{id}",
+                defaults: new { id = RouteParameter.Optional },
+                constraints: new { id = @"^[0-9]+$" });
+
+
             config.EnableCors(new EnableCorsAttribute("*", "*", "get"));
 
             container.EnableWebApi(config);

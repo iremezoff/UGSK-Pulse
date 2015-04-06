@@ -38,15 +38,6 @@ namespace UGSK.K3.Pulse.Infrastructure.Impl
             };
         }
 
-        public async Task<Index> GetIndex(string product)
-        {
-            var index = (await
-                _conn.QueryAsync<Index>(
-                    "select top 1 * from [Index] where Product=@Product",
-                    new { product })).SingleOrDefault();
-            return index ?? new Index { Product = product, Value = 0 };
-        }
-
         public async Task<Counter> UpdateCounter(Counter counter, int delta)
         {
             await _conn.ExecuteAsync(
@@ -60,16 +51,53 @@ namespace UGSK.K3.Pulse.Infrastructure.Impl
             return await GetCounter(counter.Product, counter.PeriodKind, counter.PeriodStart.Date, counter.Kind);
         }
 
-        public async Task<Index> UpdateIndex(Index index)
+        public async Task<IEnumerable<Index>> GetIndexes()
+        {
+            var result = await _conn.QueryAsync<Index>("select * from [Index]");
+            return result;
+        }
+
+        public async Task<Index> GetIndex(int id)
+        {
+            var index = (await
+                _conn.QueryAsync<Index>(
+                    "select * from [Index] where Id=@Id",
+                    new { id })).Single();
+            return index;
+        }
+
+        public async Task<Index> GetIndex(string product)
+        {
+            var index = (await
+                _conn.QueryAsync<Index>(
+                    "select top 1 * from [Index] where Product=@product",
+                    new { product })).SingleOrDefault();
+            return index ?? new Index { Product = product, Value = 100 };
+        }
+
+        public async Task DeleteIndex(int id)
+        {
+            await _conn.ExecuteAsync("delete from [Index] where Id=@Id", new { Id = id });
+        }
+
+        public async Task<Index> CreateOrUpdateIndex(Index index)
         {
             await _conn.ExecuteAsync(
-                "begin tran " +
-                "update [Index] set Value=@Value where Product=@Product and ActiveStart=@ActiveStart and IndexKind=@IndexKind" +
-                "if @@rowcount = 0 " +
-                "begin " +
-                "insert [Index] (Product, ActiveStart, IndexKind, Value) values (@Product, @ActiveStart, @IndexKind, @Value) " +
-                "end " +
-                "commit tran", new { index.Product, index.ActiveStart, index.IndexKind, index.Value });
+                "BEGIN TRAN " +
+                "UPDATE [Index] SET Product=@Product, Value=@Value, ActiveStart=@ActiveStart, IndexKind=@IndexKind "+
+                "WHERE (Product=@Product AND ActiveStart=@ActiveStart AND IndexKind=@IndexKind) OR Id = @Id " +
+                "IF @@ROWCOUNT = 0 " +
+                "BEGIN " +
+                "INSERT [Index] (Product, ActiveStart, IndexKind, Value) VALUES (@Product, @ActiveStart, @IndexKind, @Value) " +
+                "END " +
+                "COMMIT TRAN", new
+                {
+                    Id = index.Id,
+                    Product = index.Product,
+                    ActiveStart = index.ActiveStart,
+                    IndexKind = index.IndexKind,
+                    Value = index.Value
+                });
 
             return await GetIndex(index.Product);
         }
