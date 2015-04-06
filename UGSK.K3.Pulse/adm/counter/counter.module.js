@@ -1,3 +1,3 @@
 ﻿(function () {
-    angular.module('adm.counter',[]);
+    angular.module('adm.counter',['ui.router','ngResource']);
 })();

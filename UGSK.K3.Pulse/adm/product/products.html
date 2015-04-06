@@ -15,14 +15,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="item in products.items" ng-form="Index_{{$index}}">
+                                    <tr ng-repeat="item in products.items" ng-form="Index_{{$index}}">                                        
                                         <td class="input-group">
                                             <span class="input-group-addon" id="basic-addon1">{{item.Id || '&infin;'}}</span>
                                             <input type="text" class="form-control" placeholder="Наименование" required data-ng-model="item.Product">
                                         </td>
                                         <td ><input type="number" class="form-control" min="0" placeholder="План" max="1000" required data-ng-model="item.Value"></td>
-                                        <td >
-                                            <select ng-model="item.IndexKind" class="form-control" style="width:auto">
+                                        <td style="width: 20%">
+                                            <select ng-model="item.IndexKind" class="form-control">
                                                 <option value="0">Норма</option>
                                                 <option value="1">Премия</option>
                                             </select>
