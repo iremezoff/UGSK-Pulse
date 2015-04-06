@@ -5,11 +5,11 @@ using Nancy.Owin;
 
 namespace UGSK.K3.Pulse.Config
 {
-    public class ScriptResourceNancyModule : NancyModule
+    public class JSConfigResourceNancyModule : NancyModule
     {
-        public ScriptResourceNancyModule()
+        public JSConfigResourceNancyModule()
         {
-            Get["sales-statistic"] = parameters =>
+            Get["config"] = parameters =>
             {
                 var owinEnv = Context.GetOwinEnvironment();
 
@@ -18,12 +18,19 @@ namespace UGSK.K3.Pulse.Config
                 var uri = string.Format("{0}://{1}{2}", owinEnv["owin.RequestScheme"], requestHeaders["Host"].First(),
                     owinEnv["owin.RequestPathBase"]);
 
-                var env = new StatisticGainerEnvironment { ServiceAddress = uri };
+                var env = new
+                {
+                    ServiceAddress = uri,
+                    DailyPeriod = (int)PeriodKind.Daily,
+                    WeeklyPeriod = (int)PeriodKind.Weekly,
+                    TotalCounter = (int)CounterKind.Total,
+                    AverageCounter = (int)CounterKind.Average
+                };
                 return Negotiate
                     .WithModel(env)
                     .WithHeader("Content-Type", "text/javascript")
                     .WithMediaRangeModel("text/javascript", env)
-                    .WithView("statistic");
+                    .WithView("config");
             };
         }
     }

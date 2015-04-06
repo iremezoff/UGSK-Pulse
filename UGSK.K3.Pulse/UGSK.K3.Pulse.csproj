@@ -146,10 +146,11 @@
     <Content Include="app.js" />
     <Content Include="Content\day.png" />
     <Content Include="Content\week.png" />
-    <Content Include="noext.js" />
+    <Content Include="Scripts\noext.js" />
     <Content Include="packages.config" />
+    <Content Include="config.sshtml" />
     <None Include="Properties\PublishProfiles\Publish.pubxml" />
-    <Content Include="statistic.sshtml" />
+    <Content Include="Scripts\sales-statistic.js" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -194,7 +195,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AppServices\Impl\DefaultIndexProcessor.cs" />
     <Compile Include="Infrastructure\Impl\SignalRBroadcaster.cs" />
-    <Compile Include="Config\ScriptResourceNancyModule.cs" />
+    <Compile Include="Config\JSConfigResourceNancyModule.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Infrastructure\StatisticHub.cs" />
   </ItemGroup>

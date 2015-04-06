@@ -1,0 +1,11 @@
+﻿var config = {
+baseAddress: "@Model.ServiceAddress",
+radialDiameter: 300,
+fontSize: 5,
+constants: {
+	WEEKLY_PERIOD: @Model.WeeklyPeriod,
+	DAILY_PERIOD: @Model.DailyPeriod,
+	TOTAL_COUNTER: @Model.TotalCounter,
+	AVERAGE_COUNTER: @Model.AverageCounter
+	}
+}

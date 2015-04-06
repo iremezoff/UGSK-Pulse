@@ -2,36 +2,37 @@
     
     paths: {
         dc3: 'Scripts/d3.min',
-        jquery: 'Scripts/jquery-1.6.4',
+        jquery: 'Scripts/jquery-1.6.4.min',
         radial: 'Scripts/radialProgress',
-        'signalr-jquery': 'Scripts/jquery.signalR-2.2.0',
-        noext: 'noext'
+        'signalr-jquery': 'Scripts/jquery.signalR-2.2.0.min',
+        noext: 'Scripts/noext',
+        stat: 'Scripts/sales-statistic'
     }
-    
 });
 
+String.prototype.format = function () {
+    var formatted = this;
+    for (var i = 0; i < arguments.length; i++) {
+        var regexp = new RegExp('\\{' + i + '\\}', 'gi');
+        formatted = formatted.replace(regexp, arguments[i]);
+    }
+    return formatted;
+};
 
-
-require(['radial', 'dc3', 'jquery'], function () {
+require(['radial', 'dc3', 'jquery', 'noext!config'], function () {
     console.log('loaded!');
     require(['signalr-jquery'], function () {
         console.log('loaded2!');
         require(['noext!signalr/hubs'], function() {
             console.log('loaded3!');
-            require(['noext!sales-statistic'], function (_) {
+            require(['stat'], function (_) {
 
                 $.each(pulseCounters, function (product, params) {
                     pulse(params.div,
                         product,
-                        params.diameter != undefined ? params.diameter : 300,
-                        params.fontSize != undefined ? params.fontSize : 5);
+                        params.diameter != undefined ? params.diameter : config.radialDiameter,
+                        params.fontSize != undefined ? params.fontSize : config.fontSize);
                 });
-
-                //pulseCounters.forEach(function (name, value) {
-                    
-                //});
-
-                
             });
         });
     });
