@@ -68,9 +68,8 @@ namespace UGSK.K3.Pulse
             }
             catch (System.Data.SqlClient.SqlException ex)
             {
-                return StatusCode(HttpStatusCode.Conflict);
+                return Conflict();
             }
-            StatusCode(HttpStatusCode.Created);
 
             return CreatedAtRoute("rest", new { Id = index.Id }, index);
         }
