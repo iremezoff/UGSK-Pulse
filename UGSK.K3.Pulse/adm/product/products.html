@@ -9,25 +9,26 @@
                                 <thead>
                                     <tr>
                                         <th>Продукт</th>
-                                        <th>План</th>
+                                        <th>Показатель</th>
+                                        <th>Тип показателя</th>
+                                        <th>Дата начала действия</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="item in products.items" ng-form="Index_{{$index}}">
-                                        <td>
-                                            <div class="input-group">
-                                                <span class="input-group-addon" id="basic-addon1">{{item.Id || '&infin;'}}</span>
-                                                <input type="text" class="form-control" placeholder="Наименование" required data-ng-model="item.Product">
-                                            </div>
+                                        <td class="input-group">
+                                            <span class="input-group-addon" id="basic-addon1">{{item.Id || '&infin;'}}</span>
+                                            <input type="text" class="form-control" placeholder="Наименование" required data-ng-model="item.Product">
                                         </td>
-                                        <td>
-                                            <div class="input-group">
-                                                <input type="number" class="form-control" min="0" placeholder="План (0-1000)" max="1000" required data-ng-model="item.Value">
-                                                <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-danger" ng-click="products.remove(item)">Удалить продукт</button>
-                                                </span>
-                                            </div>
+                                        <td ><input type="number" class="form-control" min="0" placeholder="План" max="1000" required data-ng-model="item.Value"></td>
+                                        <td >
+                                            <select ng-model="item.IndexKind" class="form-control" style="width:auto">
+                                                <option value="0">Норма</option>
+                                                <option value="1">Премия</option>
+                                            </select>
                                         </td>
+                                        <td><input type="date" ng-model="item.ActiveStart" class="form-control" data-format-date/></td>
+                                        <td><button type="button" class="btn btn-danger" ng-click="products.remove(item)">Удалить продукт</button></td>
                                     </tr>
                                 </tbody>
                             </table>

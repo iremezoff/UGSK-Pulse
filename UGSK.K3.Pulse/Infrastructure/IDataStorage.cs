@@ -13,8 +13,7 @@ namespace UGSK.K3.Pulse.Infrastructure
         Task<Index> GetIndex(int id);
         Task<Index> GetIndex(string product);
         Task<Counter> UpdateCounter(Counter counter, int delta);
-        Task<Index> CreateOrUpdateIndex(Index index);
-        Task<Index> UpdateIndex(Index index);
+        Task<Index> CreateOrUpdateIndex(Index index);        
         Task DeleteIndex(int id);
     }
 }

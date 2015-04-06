@@ -49,7 +49,7 @@ namespace UGSK.K3.Pulse.Controllers
 
         public async Task<IHttpActionResult> Put(Index index)
         {
-            await _dataStorage.UpdateIndex(index);
+            await _dataStorage.CreateOrUpdateIndex(index);
             return StatusCode(HttpStatusCode.OK);
         }
 

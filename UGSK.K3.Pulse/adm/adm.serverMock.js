@@ -2,7 +2,7 @@
 (function () {
     angular.module('adm.serverMock', ['ngMockE2E'])
 	.run(function ($httpBackend) {
-	    var indexes = [{ Id: 1, Product: 'uauto', Value: 100 }];
+	    var indexes = [{ Id: 1, Product: 'uauto', Value: 100, ActiveStart: new Date("2015-04-01"), IndexKind: 2 }];
 
 	    $httpBackend.whenGET("/api/Index/").respond(indexes);
 

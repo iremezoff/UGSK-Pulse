@@ -145,6 +145,7 @@
   <ItemGroup>
     <Content Include="adm\adm.module.js" />
     <Content Include="adm\adm.serverMock.js" />
+    <Content Include="adm\core\formatDate.directive.js" />
     <Content Include="adm\counter\config.route.js" />
     <Content Include="adm\counter\counter.html" />
     <Content Include="adm\counter\counter.module.js" />
@@ -162,7 +163,17 @@
     <Content Include="noext.js" />
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\Publish.pubxml" />
+    <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular-resource.min.js" />
+    <Content Include="Scripts\angular-ui-router.min.js" />
+    <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\jquery-1.11.1.js" />
+    <Content Include="Scripts\jquery-1.11.1.min.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="statistic.sshtml" />
+    <Content Include="Scripts\angular-resource.min.js.map" />
+    <Content Include="Scripts\angular.min.js.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

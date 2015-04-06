@@ -37,7 +37,7 @@ namespace UGSK.K3.Pulse.Infrastructure.Impl
                 PeriodKind = periodKind
             };
         }
-                
+
         public async Task<Counter> UpdateCounter(Counter counter, int delta)
         {
             await _conn.ExecuteAsync(
@@ -75,37 +75,29 @@ namespace UGSK.K3.Pulse.Infrastructure.Impl
             return index ?? new Index { Product = product, Value = 100 };
         }
 
-
-        public async Task<Index> UpdateIndex(Index index)
-        {
-            await _conn.ExecuteAsync(
-            "update [Index] set Product=@Product, Value=@value where Id=@Id",
-            new { Id = index.Id, Product = index.Product, Value = index.Value });
-
-            return await GetIndex(index.Product);
-        }
-
-        public async Task<Index> CreateIndex(Index index)
-        {
-            return await await _conn.ExecuteAsync("insert [Index] (Product, Value) VALUES (@product, @value)",
-                new { index.Product, index.Value }).ContinueWith(t => GetIndex(index.Product));
-        }
-
         public async Task DeleteIndex(int id)
         {
             await _conn.ExecuteAsync("delete from [Index] where Id=@Id", new { Id = id });
         }
-        
+
         public async Task<Index> CreateOrUpdateIndex(Index index)
         {
             await _conn.ExecuteAsync(
-                "begin tran " +
-                "update [Index] set Value=@Value where Product=@Product and ActiveStart=@ActiveStart and IndexKind=@IndexKind" +
-                "if @@rowcount = 0 " +
-                "begin " +
-                "insert [Index] (Product, ActiveStart, IndexKind, Value) values (@Product, @ActiveStart, @IndexKind, @Value) " +
-                "end " +
-                "commit tran", new { index.Product, index.ActiveStart, index.IndexKind, index.Value });
+                "BEGIN TRAN " +
+                "UPDATE [Index] SET Product=@Product, Value=@Value, ActiveStart=@ActiveStart, IndexKind=@IndexKind "+
+                "WHERE (Product=@Product AND ActiveStart=@ActiveStart AND IndexKind=@IndexKind) OR Id = @Id " +
+                "IF @@ROWCOUNT = 0 " +
+                "BEGIN " +
+                "INSERT [Index] (Product, ActiveStart, IndexKind, Value) VALUES (@Product, @ActiveStart, @IndexKind, @Value) " +
+                "END " +
+                "COMMIT TRAN", new
+                {
+                    Id = index.Id,
+                    Product = index.Product,
+                    ActiveStart = index.ActiveStart,
+                    IndexKind = index.IndexKind,
+                    Value = index.Value
+                });
 
             return await GetIndex(index.Product);
         }

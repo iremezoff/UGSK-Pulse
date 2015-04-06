@@ -20,7 +20,8 @@
         }
 
         function add() {
-            var newProduct = new Product();
+            //var indexes = [{ Id: 1, Product: 'uauto', Value: 100, ActiveStart: new Date("2015-04-01"), IndexKind: 2 }];
+            var newProduct = new Product({ ActiveStart: new Date(), IndexKind: 0 });
             vm.items.push(newProduct);
         }
 
