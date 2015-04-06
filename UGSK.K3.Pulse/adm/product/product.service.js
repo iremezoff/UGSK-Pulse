@@ -5,6 +5,6 @@
 
     function ProductService($resource, productModuleConfiguration) {
         var actions = { $update: { method: "PUT"} };
-        return $resource(productModuleConfiguration.IndexUrl + '/:id', { id: "@id" }, actions);
+        return $resource(productModuleConfiguration.IndexUrl + '/:id', { id: "@Id" }, actions);
     }
 })();

@@ -1,32 +1,33 @@
-﻿(function () {
+﻿//product.controller.js
+(function () {
     "use strict";
     angular.module('adm.product')
-    .controller('ProductsController', ['$scope', '$state', 'ProductService', ProductsController]);
+    .controller('ProductsController', ['$scope', '$state', 'Product', ProductsController]);
 
-    function ProductsController($scope, $state, ProductService) {
+    function ProductsController($scope, $state, Product) {
         var vm = this;
         vm.items = [];
         vm.add = add;
         vm.saveAll = saveAll;
-        vm.remove = remove;        
+        vm.remove = remove;
 
         init();
 
         function init() {
-            ProductService.query(function (data) {
+            Product.query(function (data) {
                 vm.items = data;
             });
         }
 
         function add() {
-            var newProduct = new ProductService({ Product: '', Value: 100 })
+            var newProduct = new Product();
             vm.items.push(newProduct);
         }
 
         function saveAll() {
             vm.items.forEach(function (item) {
                 if (item.Id) {
-                    ProductService.$update(item);
+                    Product.$update(item);
                 }
                 else {
                     item.$save();
@@ -36,33 +37,22 @@
         }
         function remove(item) {
             if (item.Id) {
-                ProductService.remove({ Id: item.Id })
-                .$promise.then(
-                function (deletedItem) {
-                    removeFromArray(deletedItem);
-                }
-                , function (err) {
-                    console.error(err);
-                });
+                //Product.remove({Id: item.Id}, removeFromArray(item), function (err) {
+                //    console.debug('Error while removing from array')
+                //});
+                item.$remove().then(removeFromArray(item));
             } else {
-                removeFromArray(item)
+                removeFromArray(item);
             }
-
         }
 
         function removeFromArray(deletedItem) {
-            var itemIndex = -1;            
-            vm.items.forEach(function (curValue, index) {
-                if (curValue.Id === deletedItem.Id)
-                {
-                    itemIndex = index;
-                    return;
+            for (var i = vm.items.length - 1; i >= 0; i--) {
+                if (deletedItem.$$hash == vm.items[i].$$hash) {
+                    vm.items.splice(i, 1);
+                    return true;
                 }
-            })
-            
-            if (index > -1) {
-                vm.items.splice(index, 1);
-            }
+            };
         }
     }
 })();

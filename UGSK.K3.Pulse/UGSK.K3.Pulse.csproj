@@ -141,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="adm\adm.module.js" />
+    <Content Include="adm\adm.serverMock.js" />
     <Content Include="adm\counter\config.route.js" />
     <Content Include="adm\counter\counter.html" />
     <Content Include="adm\counter\counter.module.js" />
@@ -158,6 +159,7 @@
     <Content Include="noext.js" />
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\Publish.pubxml" />
+    <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular-resource.min.js" />
     <Content Include="Scripts\angular-ui-router.min.js" />
     <Content Include="Scripts\angular.min.js" />
