@@ -156,6 +156,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\day.png" />
     <Content Include="Content\week.png" />
+    <Content Include="favicon.ico" />
     <Content Include="noext.js" />
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\Publish.pubxml" />
