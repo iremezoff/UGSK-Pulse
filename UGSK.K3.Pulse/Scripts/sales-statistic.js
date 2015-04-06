@@ -9,7 +9,7 @@ function pulse(domDiv, product, diameter, fontSize) {
             return;
 
         // total daily counter
-        if (counter.Kind === config.constants.DAILY_COUNTER && counter.PeriodKind === config.constants.DAILY_PERIOD) {
+        if (counter.Kind === config.constants.TOTAL_COUNTER && counter.PeriodKind === config.constants.DAILY_PERIOD) {
             rp2.value(counter.Value);
         }
         // average weekly counter
