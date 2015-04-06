@@ -16,10 +16,10 @@
         }
 
 
-            #div3 .arc {
-                stroke-weight: 0.1;
-                fill: #1d871b;
-            }
+        #div3 .arc {
+            stroke-weight: 0.1;
+            fill: #1d871b;
+        }
 
 
         .selectedRadial {
@@ -48,22 +48,17 @@
         </div>
     </div>
 
-    
+
     <script type="text/javascript" src="http://localhost:40438/Scripts/require.js" data-main="http://localhost:40438/app.js"></script>
-<script type="text/javascript">
-    //$(document).ready(function() {
-
-
-    requirejs(['noext!sales-statistic'],
-function (stat) {
-
-
-
-    //ugskPulse.on(document.getElementById('div2'), 'uauto', 300, 5, jQuery).go();
-});
-        
-    //} );
-</script>
+    <script type="text/javascript">
+        var pulseCounters = {
+            'uauto': {
+                div: document.getElementById('div2'),
+                diameter: 300,
+                fontSizr: 5
+            }
+        };
+    </script>
     <div id="test"></div>
 </body>
 </html>

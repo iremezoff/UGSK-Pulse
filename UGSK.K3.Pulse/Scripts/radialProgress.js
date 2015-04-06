@@ -23,7 +23,7 @@
  OTHER DEALINGS IN THE SOFTWARE.
  */
 
-function radialProgress(parent) {
+function radialProgress(parent, contentPath) {
     var _data=null,
 		_data=null,
         _duration= 1000,
@@ -86,7 +86,7 @@ function radialProgress(parent) {
                 .on("click",onMouseClick);
 
 
-            _arc.endAngle(360 * (Math.PI/180))
+            _arc.endAngle(360 * (Math.PI / 180));
 
             background.append("rect")
                 .attr("class","background")
@@ -162,7 +162,7 @@ function radialProgress(parent) {
             .attr("x",_width/2.2)
 			.attr('width', _diameter/15)
    .attr('height', _diameter/15)
-   .attr("xlink:href","day.png");
+   .attr("xlink:href",contentPath+"/day.png");
    
    var imgs = svg.selectAll(".image2").data(data);
             imgs.enter()
@@ -171,7 +171,7 @@ function radialProgress(parent) {
             .attr("x",_width/2.2)
 			.attr('width', _diameter/15)
    .attr('height', _diameter/15)
-   .attr("xlink:href","week.png");
+   .attr("xlink:href", contentPath + "/week.png");
 				
 				var label2 = svg.select(".labels").selectAll(".label2").data(data);
             label2.enter().append("text")
