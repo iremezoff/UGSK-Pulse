@@ -1,16 +1,15 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using Dapper;
-using System.Configuration;
 
-namespace UGSK.K3.Pulse
+namespace UGSK.K3.Pulse.Infrastructure.Impl
 {
-    public class DapperDataStorage : IDataStorage
+    class DapperDataStorage : IDataStorage
     {
         private readonly IDbConnection _conn;
         public DapperDataStorage()
@@ -26,9 +25,9 @@ namespace UGSK.K3.Pulse
         public async Task<Counter> GetCounter(string product, PeriodKind periodKind, DateTimeOffset periodStart, CounterKind counterKind)
         {
             var counter = (await
-                    _conn.QueryAsync<Counter>(
-                        "select top 1 * from Counter where Product=@product and PeriodStart=@periodStart and PeriodKind=@periodKind and CounterKind=@counterKind",
-                        new { product, periodKind, periodStart = periodStart.Date, counterKind })).SingleOrDefault();
+                _conn.QueryAsync<Counter>(
+                    "select top 1 * from Counter where Product=@product and PeriodStart=@periodStart and PeriodKind=@periodKind and CounterKind=@counterKind",
+                    new { product, periodKind, periodStart = periodStart.Date, counterKind })).SingleOrDefault();
 
             return counter ?? new Counter
             {
@@ -38,14 +37,14 @@ namespace UGSK.K3.Pulse
                 PeriodKind = periodKind
             };
         }
-
+                
         public async Task<Counter> UpdateCounter(Counter counter, int delta)
         {
             await _conn.ExecuteAsync(
                 "begin tran update Counter set Value=Value+@delta, IsClosed=@isClosed where Product=@product and PeriodStart=@periodStart and PeriodKind=@periodKind and CounterKind=@counterKind " +
                 "if @@rowcount = 0 " +
                 "begin " +
-                "insert Counter (Product, PeriodStart, PeriodKind, CounterKind, Value, IsClosed) values (@product, @periodStart, @periodKind, @counterKind, 0, 0) " +
+                "insert Counter (Product, PeriodStart, PeriodKind, CounterKind, Value, IsClosed) values (@Product, @periodStart, @periodKind, @counterKind, 1, 0) " +
                 "end " +
                 "commit tran", new { counter.Product, counter.PeriodKind, periodStart = counter.PeriodStart.Date, counterKind = counter.Kind, delta, isClosed = counter.IsClosed });
 
@@ -92,10 +91,23 @@ namespace UGSK.K3.Pulse
                 new { index.Product, index.Value }).ContinueWith(t => GetIndex(index.Product));
         }
 
-
         public async Task DeleteIndex(int id)
         {
             await _conn.ExecuteAsync("delete from [Index] where Id=@Id", new { Id = id });
+        }
+        
+        public async Task<Index> CreateOrUpdateIndex(Index index)
+        {
+            await _conn.ExecuteAsync(
+                "begin tran " +
+                "update [Index] set Value=@Value where Product=@Product and ActiveStart=@ActiveStart and IndexKind=@IndexKind" +
+                "if @@rowcount = 0 " +
+                "begin " +
+                "insert [Index] (Product, ActiveStart, IndexKind, Value) values (@Product, @ActiveStart, @IndexKind, @Value) " +
+                "end " +
+                "commit tran", new { index.Product, index.ActiveStart, index.IndexKind, index.Value });
+
+            return await GetIndex(index.Product);
         }
     }
 }

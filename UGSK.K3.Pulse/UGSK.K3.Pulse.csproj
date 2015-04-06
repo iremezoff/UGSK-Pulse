@@ -103,6 +103,7 @@
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -148,28 +149,18 @@
     <Content Include="adm\home.html" />
     <Content Include="adm\index.html" />
     <Content Include="adm\product\config.route.js" />
-    <Content Include="adm\product\products.controller.js" />
-    <Content Include="adm\product\product.service.js" />
     <Content Include="adm\product\product.module.js" />
+    <Content Include="adm\product\product.service.js" />
+    <Content Include="adm\product\products.controller.js" />
     <Content Include="adm\product\products.html" />
     <Content Include="app.js" />
-    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\day.png" />
     <Content Include="Content\week.png" />
     <Content Include="favicon.ico" />
     <Content Include="noext.js" />
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\Publish.pubxml" />
-    <Content Include="Scripts\angular-mocks.js" />
-    <Content Include="Scripts\angular-resource.min.js" />
-    <Content Include="Scripts\angular-ui-router.min.js" />
-    <Content Include="Scripts\angular.min.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\jquery-1.11.1.js" />
-    <Content Include="Scripts\jquery-1.11.1.min.js" />
     <Content Include="statistic.sshtml" />
-    <Content Include="Scripts\angular.min.js.map" />
-    <Content Include="Scripts\angular-resource.min.js.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -192,13 +183,33 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers.cs" />
-    <Compile Include="DapperDataStorage.cs" />
+    <Compile Include="AppServices\Impl\CounterQuery.cs" />
+    <Compile Include="AppServices\Impl\DefaultCounterProcessor.cs" />
+    <Compile Include="AppServices\Impl\DefaultCounterProcessorAdapter.cs" />
+    <Compile Include="Processors\AverageWeekStatisticDailyProcessor.cs" />
+    <Compile Include="Processors\SyncAdapters\AverageWeekStatisticDailyProcessorAdapter.cs" />
+    <Compile Include="Config\Bootstrapper.cs" />
+    <Compile Include="Config\ContainerJobActivator.cs" />
+    <Compile Include="Controllers\IndexController.cs" />
+    <Compile Include="Controllers\CounterController.cs" />
+    <Compile Include="Infrastructure\IBroadcaster.cs" />
+    <Compile Include="AppServices\ICounterProcessor.cs" />
+    <Compile Include="AppServices\ICounterQuery.cs" />
+    <Compile Include="Infrastructure\IDataStorage.cs" />
+    <Compile Include="AppServices\IIndexProcessor.cs" />
+    <Compile Include="Infrastructure\ILogger.cs" />
+    <Compile Include="Infrastructure\Impl\DapperDataStorage.cs" />
     <Compile Include="Data.cs" />
+    <Compile Include="Infrastructure\Impl\DefaultLogger.cs" />
+    <Compile Include="Processors\PreviousDateStatCleaner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services.cs" />
+    <Compile Include="AppServices\Impl\DefaultIndexProcessor.cs" />
+    <Compile Include="Infrastructure\Impl\SignalRBroadcaster.cs" />
+    <Compile Include="Config\ScriptResourceNancyModule.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Infrastructure\StatisticHub.cs" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -210,7 +221,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>40438</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

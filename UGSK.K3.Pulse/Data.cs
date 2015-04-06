@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -8,6 +9,8 @@ namespace UGSK.K3.Pulse
     public enum PeriodKind { Daily = 1, Weekly = 2, Monthly = 3 }
 
     public enum CounterKind { Average = 0, Total = 1 }
+
+    public enum IndexKind { Normal, Super }
 
     public class SaleSystemNotification
     {
@@ -45,7 +48,12 @@ namespace UGSK.K3.Pulse
     public class Index
     {
         public int Id { get; set; }
+        [Required]
         public string Product { get; set; }
         public int Value { get; set; }
+        [Required]
+        public DateTimeOffset ActiveStart { get; set; }
+        [Required]
+        public IndexKind IndexKind { get; set; }
     }
 }

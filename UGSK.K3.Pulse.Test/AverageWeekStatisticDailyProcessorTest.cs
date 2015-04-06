@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
+using UGSK.K3.Pulse.Infrastructure;
+using UGSK.K3.Pulse.Processors;
 
 namespace UGSK.K3.Pulse.Test
 {
