@@ -1,5 +1,5 @@
 ﻿require.config({
-    
+
     paths: {
         dc3: 'Scripts/d3.min',
         jquery: 'Scripts/jquery-1.6.4.min',
@@ -23,12 +23,14 @@ require(['radial', 'dc3', 'jquery', 'noext!config'], function () {
     console.log('loaded!');
     require(['signalr-jquery'], function () {
         console.log('loaded2!');
-        require(['noext!signalr/hubs'], function() {
+        require(['noext!signalr/hubs'], function () {
             console.log('loaded3!');
-            require(['stat'], function (_) {
+            require(['stat'], function () {
+
+                var c = pulse();
 
                 $.each(pulseCounters, function (product, params) {
-                    pulse(params.div,
+                    c.addCounter(params.div,
                         product,
                         params.diameter != undefined ? params.diameter : config.radialDiameter,
                         params.fontSize != undefined ? params.fontSize : config.fontSize);
