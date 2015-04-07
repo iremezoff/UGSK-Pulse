@@ -89,20 +89,6 @@ function pulse() {
 
 
 
-function currentDate() {
-    var date = new Date();
-
-    var dd = date.getDate();
-    var mm = date.getMonth() + 1;
-    var yyyy = date.getFullYear();
-    var hh = date.getHours();
-    var MM = date.getMinutes();
-    var ss = date.getSeconds();
-
-    return (hh < 10 ? '0' + hh : hh) + ':' + (MM < 10 ? '0' + MM : MM) + ':' + (ss < 10 ? '0' + ss : ss) + ' ' + (dd < 10 ? '0' + dd : dd) + '.' + (mm < 10 ? '0' + mm : mm) + '.' + yyyy;
-}
-
-
 
 
 
