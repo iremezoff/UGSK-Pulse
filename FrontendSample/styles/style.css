@@ -32,6 +32,10 @@
     fill: #e1e1e1;
 }
 
+.component2 {
+fill: #ffff00;
+}
+
 .component .label {
     font-family: Myriad, "Helvetic Neue", Helvetica, Arial;
     text-anchor: middle;
@@ -60,7 +64,7 @@
 }
 
 
-.label {
+.label, .label2 {
     font-family:  Myriad, "Helvetic Neue", Helvetica, Arial;
     text-anchor: middle;
 }

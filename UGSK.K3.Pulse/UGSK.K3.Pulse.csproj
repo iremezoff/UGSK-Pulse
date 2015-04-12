@@ -146,11 +146,14 @@
     <Content Include="pulse.js" />
     <Content Include="Content\day.png" />
     <Content Include="Content\week.png" />
+    <Content Include="Scripts\d3\d3.js" />
+    <Content Include="Scripts\d3\d3.min.js" />
     <Content Include="Scripts\noext.js" />
     <Content Include="packages.config" />
     <Content Include="config.sshtml" />
     <None Include="Properties\PublishProfiles\Publish.pubxml" />
     <Content Include="Scripts\sales-statistic.js" />
+    <Content Include="Scripts\d3\LICENSE" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -160,7 +163,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\jquery-1.6.4-vsdoc.js" />
-    <Content Include="Scripts\d3.min.js" />
     <Content Include="Scripts\jquery-1.6.4.js" />
     <Content Include="Scripts\jquery-1.6.4.min.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.js" />

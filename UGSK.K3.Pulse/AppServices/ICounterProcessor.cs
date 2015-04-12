@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace UGSK.K3.Pulse
+namespace UGSK.K3.Pulse.AppServices
 {
     public interface ICounterProcessor
     {

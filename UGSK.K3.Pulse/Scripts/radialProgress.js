@@ -56,8 +56,7 @@ function radialProgress(parent, contentPath) {
         .endAngle(0); //just radians
 
     var _arc3 = d3.svg.arc()
-        .startAngle(0 * (Math.PI / 180))
-        .endAngle(0); //just radians
+        .startAngle(0 * (Math.PI / 180));
 
     var _arc4 = d3.svg.arc()
         .startAngle(0 * (Math.PI / 180))
@@ -73,7 +72,9 @@ function radialProgress(parent, contentPath) {
             // Select the svg element, if it exists.
             var svg = d3.select(this).selectAll("svg").data([data]);
 
-            var enter = svg.enter().append("svg").attr("class", "radial-svg").append("g");
+            var enter = svg.enter().append("svg")
+                .attr("class", "radial-svg")
+                .append("g");
 
             measure();
 
@@ -82,11 +83,13 @@ function radialProgress(parent, contentPath) {
 
 
             var background = enter.append("g").attr("class", "component")
-                .attr("cursor", "pointer")
+                //.attr("cursor", "pointer")
                 .on("click", onMouseClick);
 
 
             _arc.endAngle(360 * (Math.PI / 180));
+
+            _arc3.endAngle(360 * (Math.PI / 180));
 
             background.append("rect")
                 .attr("class", "background")
@@ -98,20 +101,20 @@ function radialProgress(parent, contentPath) {
                 .attr("d", _arc);
 
             background.append("path")
-                .attr("transform", "translate(" + _width / 3 + "," + _width / 3 + ")")
-                .attr("d", _arc4);
+                .attr("transform", "translate(" + _width / 2 + "," + _width / 2 + ")")
+                .attr("d", _arc3);
 
             background.append("text")
                 .attr("class", "label")
                 .attr("transform", "translate(" + _width / 2 + "," + (_width + _fontSize / 2) + ")")
                 .text(_label);
 
-
             var g = svg.select("g")
                  .attr("transform", "translate(" + _margin.left + "," + _margin.top + ")");
 
 
             _arc.endAngle(_currentArc);
+            _arc3.endAngle(_currentArc3);
             enter.append("g").attr("class", "arcs");
             var path = svg.select(".arcs").selectAll(".arc").data(data);
             path.enter().append("path")
@@ -137,7 +140,7 @@ function radialProgress(parent, contentPath) {
                 .attr("class", "arc4")
                 .attr("transform", "translate(" + _width / 2 + "," + _width / 2 + ")")
                 .attr("d", _arc4);
-            
+
             enter.append("g").attr("class", "labels");
             
             var label = svg.select(".labels").selectAll(".label").data(data);
@@ -148,7 +151,7 @@ function radialProgress(parent, contentPath) {
                 .attr("cursor", "pointer")
                 .attr("width", _width)
                 .text(function(d) {
-                    return _value + "/" + _minValue /*Math.round((_value-_minValue)/(_maxValue-_minValue)*100) + "%"*/
+                    return _value + "/" + _minValue; /*Math.round((_value-_minValue)/(_maxValue-_minValue)*100) + "%"*/
                 })
                 .style("font-size", _fontSize / 3 + "px")
                 .on("click", onMouseClick);
@@ -162,7 +165,7 @@ function radialProgress(parent, contentPath) {
                 .attr('height', _diameter / 15)
                 .attr("xlink:href", contentPath + "/day.png");
 
-            var imgs = svg.selectAll(".image2").data(data);
+            imgs = svg.selectAll(".image2").data(data);
             imgs.enter()
                 .append("svg:image")
                 .attr("y", _width / 2.3 + _fontSize / 3)
@@ -173,13 +176,13 @@ function radialProgress(parent, contentPath) {
 
             var label2 = svg.select(".labels").selectAll(".label2").data(data);
             label2.enter().append("text")
-                .attr("class", "label")
+                .attr("class", "label2")
                 .attr("y", _width / 1.75 + _fontSize / 3)
                 .attr("x", _width / 2)
                 .attr("cursor", "pointer")
                 .attr("width", _width)
                 .text(function(d) {
-                    return _value2 + "/" + _minValue2 /*Math.round((_value-_minValue)/(_maxValue-_minValue)*100) + "%"*/
+                    return _value2 + "/" + _minValue2; /*Math.round((_value-_minValue)/(_maxValue-_minValue)*100) + "%"*/
                 })
                 .style("font-size", _fontSize / 3 + "px")
                 .on("click", onMouseClick);
@@ -387,7 +390,7 @@ function radialProgress(parent, contentPath) {
     };
 
     component.diameter = function (_) {
-        if (!arguments.length) return _diameter
+        if (!arguments.length) return _diameter;
         _diameter = _;
         return component;
     };

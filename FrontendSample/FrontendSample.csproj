@@ -66,7 +66,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="style.css" />
     <Content Include="styles\style.css" />
     <Content Include="test.html" />
     <Content Include="Web.config" />

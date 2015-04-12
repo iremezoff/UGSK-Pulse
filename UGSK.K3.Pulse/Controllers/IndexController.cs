@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
+using UGSK.K3.Pulse.AppServices;
 using UGSK.K3.Pulse.Infrastructure;
 
 namespace UGSK.K3.Pulse.Controllers

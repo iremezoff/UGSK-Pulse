@@ -19,8 +19,6 @@ namespace UGSK.K3.Pulse.Processors
             _broadcaster = broadcaster;
         }
 
-
-
         public async Task ProcessAsync(DateTime dateForHandle)
         {
             var products = await _dataStorage.GetProducts();

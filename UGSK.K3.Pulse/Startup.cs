@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading;
+using System.Web;
+using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Hangfire;
@@ -57,12 +59,12 @@ namespace UGSK.K3.Pulse
 
             app.UseHangfire(conf =>
             {
-                conf.UseSqlServerStorage("Pulse", new SqlServerStorageOptions { PrepareSchemaIfNecessary = false });
+                conf.UseSqlServerStorage(GlobalOptions.HangfireSqlServer.ConnectionsStringName, new SqlServerStorageOptions { PrepareSchemaIfNecessary = GlobalOptions.HangfireSqlServer.PrepareSchemaIfNecessary });
                 conf.UseServer();
                 conf.UseActivator(new ContainerJobActivator(container));
             });
 
-//            InitializeJobs();
+            InitializeJobs();
 
             app.UseNancy(options =>
               options.PerformPassThrough = context =>
@@ -85,4 +87,106 @@ namespace UGSK.K3.Pulse
     {
         public string ServiceAddress { get; set; }
     }
+
+    public class ApplicationPreload : System.Web.Hosting.IProcessHostPreloadClient
+    {
+        public void Preload(string[] parameters)
+        {
+            HangfireBootstrapper.Instance.Start();
+        }
+    }
+
+    // for keep working of application and ensure that workers will be performed
+    // for more information, see http://docs.hangfire.io/en/latest/deployment-to-production/making-aspnet-app-always-running.html
+
+    public class Global : HttpApplication
+    {
+        protected void Application_Start(object sender, EventArgs e)
+        {
+            HangfireBootstrapper.Instance.Start();
+        }
+
+        protected void Application_End(object sender, EventArgs e)
+        {
+            HangfireBootstrapper.Instance.Stop();
+        }
+    }
+
+    internal static class GlobalOptions
+    {
+        public static class HangfireSqlServer
+        {
+            public const string ConnectionsStringName = "Pulse";
+            public const bool PrepareSchemaIfNecessary = false;
+        }
+    }
+
+    public class HangfireBootstrapper : IRegisteredObject
+    {
+        public static readonly HangfireBootstrapper Instance = new HangfireBootstrapper();
+
+        private readonly object _lockObject = new object();
+        private bool _started;
+
+        private BackgroundJobServer _backgroundJobServer;
+
+        public void Start()
+        {
+            lock (_lockObject)
+            {
+                if (_started) return;
+                _started = true;
+
+                HostingEnvironment.RegisterObject(this);
+
+                JobStorage.Current = new SqlServerStorage(GlobalOptions.HangfireSqlServer.ConnectionsStringName,
+                    new SqlServerStorageOptions()
+                    {
+                        PrepareSchemaIfNecessary = GlobalOptions.HangfireSqlServer.PrepareSchemaIfNecessary
+                    });
+
+                _backgroundJobServer = new BackgroundJobServer();
+                _backgroundJobServer.Start();
+            }
+        }
+
+        public void Stop()
+        {
+            lock (_lockObject)
+            {
+                if (_backgroundJobServer != null)
+                {
+                    _backgroundJobServer.Dispose();
+                }
+
+                HostingEnvironment.UnregisterObject(this);
+            }
+        }
+
+        void IRegisteredObject.Stop(bool immediate)
+        {
+            Stop();
+        }
+    }
+
+    // don't forget include below to applicationHost.config (%WINDIR%\System32\inetsrv\config\applicationHost.config)
+    // see parameters in {}
+
+    //<applicationPools>
+    //    <add name="{PoolName}" managedRuntimeVersion="v4.0" startMode="AlwaysRunning" />
+    //</applicationPools>
+
+    //<!-- ... -->
+
+    //<sites>
+    //    <site name="{SiteName}" id="1">
+    //        <application path="/" serviceAutoStartEnabled="true"
+    //                              serviceAutoStartProvider="ApplicationPreload" />
+    //    </site>
+    //</sites>
+
+    //<!-- Just AFTER closing the `sites` element AND AFTER `webLimits` tag -->
+    //<serviceAutoStartProviders>
+    //    <add name="ApplicationPreload" type="UGSK.K3.Pulse.ApplicationPreload, UGSK.K3.Pulse" />
+    //</serviceAutoStartProviders>
 }

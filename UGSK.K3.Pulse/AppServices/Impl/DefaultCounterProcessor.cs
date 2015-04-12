@@ -19,7 +19,9 @@ namespace UGSK.K3.Pulse.AppServices.Impl
 
         public async Task ProcessAsync(SaleSystemNotification notification)
         {
-            var counter = new Counter() { Product = notification.Product, PeriodKind = PeriodKind.Daily, PeriodStart = DateTimeOffset.Now.Date, Kind = CounterKind.Total };
+            var periodKind = PeriodKind.Daily;
+            var counterKind = CounterKind.Total;
+            var counter = new Counter() { Product = notification.Product, PeriodKind = periodKind, PeriodStart = DateTimeOffset.Now.Date, Kind = counterKind };
 
             await _logger.Write(notification);
 
@@ -32,8 +34,8 @@ namespace UGSK.K3.Pulse.AppServices.Impl
                 Product = notification.Product,
                 Value = savedCounter.Value,
                 PeriodStart = counter.PeriodStart.Date,
-                Kind = CounterKind.Total,
-                PeriodKind = PeriodKind.Daily
+                Kind = counterKind,
+                PeriodKind = periodKind
             });
         }
     }
