@@ -48,22 +48,22 @@
         </div>
     </div>
 
+<script type="text/javascript" src="http://localhost:40438/Scripts/require.js" data-main="http://localhost:40438/pulse.run"></script>
+<script type="text/javascript">
+    define("counters", {
+        'uauto': {
+            div: document.getElementById('div2'),
+            diameter: 300,
+            fontSize: 5
+        },
+        'osago': {
+            div: document.getElementById('div3'),
+            diameter: 300,
+            fontSize: 5
+        }
+    });
+</script>
 
-    <script type="text/javascript" src="http://localhost:40438/Scripts/require.js" data-main="http://localhost:40438/pulse.js"></script>
-    <script type="text/javascript">
-        var pulseCounters = {
-            'uauto': {
-                div: document.getElementById('div2'),
-                diameter: 300,
-                fontSize: 5
-            },
-            'osago': {
-                div: document.getElementById('div3'),
-                diameter: 300,
-                fontSize: 5
-            }
-        };
-    </script>
     <div id="test"></div>
 </body>
 </html>

@@ -1,5 +1,4 @@
-﻿
-function pulse() {
+﻿function pulse($, config, radialProgress) {
 
     var pulses = {};
 
@@ -41,8 +40,8 @@ function pulse() {
 
         var rp2 = radialProgress(domDiv, uriPattern.format("Content"))
             .label(product)
-            .diameter(diameter)
-            .fontSize(fontSize);
+            .diameter(diameter || config.diameter)
+            .fontSize(fontSize || config.fontSize);
 
         pulses[product] = rp2;
 

@@ -1,11 +1,14 @@
-﻿var config = {
-baseAddress: "@Model.ServiceAddress",
-radialDiameter: 300,
-fontSize: 5,
-constants: {
-	WEEKLY_PERIOD: @Model.WeeklyPeriod,
-	DAILY_PERIOD: @Model.DailyPeriod,
-	TOTAL_COUNTER: @Model.TotalCounter,
-	AVERAGE_COUNTER: @Model.AverageCounter
+﻿// this file is generated to be filled by server variables as AMD module
+define(function() {
+	return {
+		baseAddress: "@Model.ServiceAddress",
+		radialDiameter: 300,
+		fontSize: 5,
+		constants: {
+			WEEKLY_PERIOD: @Model.WeeklyPeriod,
+			DAILY_PERIOD: @Model.DailyPeriod,
+			TOTAL_COUNTER: @Model.TotalCounter,
+			AVERAGE_COUNTER: @Model.AverageCounter
+		}
 	}
-}
+});
