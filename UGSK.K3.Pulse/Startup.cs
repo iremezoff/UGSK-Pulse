@@ -64,6 +64,8 @@ namespace UGSK.K3.Pulse
                 conf.UseServer();
                 conf.UseActivator(new ContainerJobActivator(container));
             });
+            app.UseHangfireDashboard();
+           
 
             InitializeJobs();
 
