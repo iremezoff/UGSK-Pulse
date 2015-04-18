@@ -78,7 +78,7 @@ namespace UGSK.K3.Pulse
 
             RecurringJob.AddOrUpdate<CommonProcessorAdapter<PreviousDateStatProcessor>>(PreviousDateStatProcessor.Name, p => p.Process(DateTime.Now.AddDays(-1).Date), "35 * * * *");
 
-            RecurringJob.AddOrUpdate("test of unslept state", () => WriteLog(), "1 * * * *");
+            RecurringJob.AddOrUpdate("test of unslept state", () => WriteLog("start app"), "1 * * * *");
 
             // perform to update statistic if it has not been updated (worker failed, app wasn't run early)
             RecurringJob.Trigger(PerWeekDailyAverageStatisticProcessor.Name);
@@ -86,11 +86,11 @@ namespace UGSK.K3.Pulse
             RecurringJob.Trigger("test of unslept state");
         }
 
-        public static void WriteLog()
+        public static void WriteLog(string message = null)
         {
             using (var fs = new StreamWriter(@"c:\Logs\UGSK.K3.Pulse\log.txt", true))
             {
-                fs.WriteLine(DateTime.Now);
+                fs.WriteLine(string.Join("|", new[] { DateTime.Now.ToString(), message }));
             }
         }
     }
@@ -160,6 +160,8 @@ namespace UGSK.K3.Pulse
 
                 _backgroundJobServer = new BackgroundJobServer();
                 _backgroundJobServer.Start();
+
+                Startup.WriteLog("server start");
             }
         }
 
@@ -170,6 +172,7 @@ namespace UGSK.K3.Pulse
                 if (_backgroundJobServer != null)
                 {
                     _backgroundJobServer.Dispose();
+                    Startup.WriteLog("server stop");
                 }
 
                 HostingEnvironment.UnregisterObject(this);
