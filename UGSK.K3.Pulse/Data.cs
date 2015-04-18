@@ -27,6 +27,7 @@ namespace UGSK.K3.Pulse
         public int Value { get; set; }
         public CounterKind Kind { get; set; }
         public DateTimeOffset PeriodStart { get; set; }
+        public DateTimeOffset? PeriodActualDate { get; set; }
         public bool IsClosed { get; set; }
     }
 

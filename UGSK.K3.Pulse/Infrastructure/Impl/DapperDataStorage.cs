@@ -22,7 +22,7 @@ namespace UGSK.K3.Pulse.Infrastructure.Impl
             return (await _conn.QueryAsync<Index>("select distinct Product from [Index]")).Select(p => p.Product);
         }
 
-        public async Task<Counter> GetCounter(string product, PeriodKind periodKind, DateTimeOffset periodStart, CounterKind counterKind)
+        public async Task<Counter> GetCounterOrDefault(string product, PeriodKind periodKind, DateTimeOffset periodStart, CounterKind counterKind)
         {
             var counter = (await
                 _conn.QueryAsync<Counter>(
@@ -50,14 +50,24 @@ namespace UGSK.K3.Pulse.Infrastructure.Impl
         public async Task<Counter> UpdateCounter(Counter counter, int delta)
         {
             await _conn.ExecuteAsync(
-                "begin tran update Counter set Value=Value+@delta, IsClosed=@isClosed where Product=@product and PeriodStart=@periodStart and PeriodKind=@periodKind and CounterKind=@counterKind " +
+                "begin tran update Counter set Value=Value+@delta, IsClosed=@isClosed, PeriodActualDate=@periodActualDate where Product=@product and PeriodStart=@periodStart and PeriodKind=@periodKind and CounterKind=@counterKind " +
                 "if @@rowcount = 0 " +
                 "begin " +
-                "insert Counter (Product, PeriodStart, PeriodKind, CounterKind, Value, IsClosed) values (@Product, @periodStart, @periodKind, @counterKind, 1, 0) " +
+                "insert Counter (Product, PeriodStart, PeriodActualDate, PeriodKind, CounterKind, Value, IsClosed) values (@Product, @periodStart, @periodStart, @periodKind, @counterKind, 1, 0) " +
                 "end " +
-                "commit tran", new { counter.Product, counter.PeriodKind, periodStart = counter.PeriodStart.Date, counterKind = counter.Kind, delta, isClosed = counter.IsClosed });
+                "commit tran",
+                new
+                {
+                    counter.Product,
+                    counter.PeriodKind,
+                    periodStart = counter.PeriodStart.Date,
+                    periodActualDate = counter.PeriodActualDate.HasValue ? counter.PeriodActualDate.Value.Date : (DateTimeOffset?)null,
+                    counterKind = counter.Kind,
+                    delta,
+                    isClosed = counter.IsClosed
+                });
 
-            return await GetCounter(counter.Product, counter.PeriodKind, counter.PeriodStart.Date, counter.Kind);
+            return await GetCounterOrDefault(counter.Product, counter.PeriodKind, counter.PeriodStart.Date, counter.Kind);
         }
 
         public async Task<Index> UpdateIndex(Index index)

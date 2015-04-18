@@ -180,7 +180,7 @@
     <Compile Include="AppServices\Impl\CounterQuery.cs" />
     <Compile Include="AppServices\Impl\DefaultCounterProcessor.cs" />
     <Compile Include="AppServices\Impl\DefaultCounterProcessorAdapter.cs" />
-    <Compile Include="Processors\AverageWeekStatisticDailyProcessor.cs" />
+    <Compile Include="Processors\PerWeekDailyAverageStatisticProcessor.cs" />
     <Compile Include="Processors\SyncAdapters\CommonProcessorAdapter.cs" />
     <Compile Include="Config\Bootstrapper.cs" />
     <Compile Include="Config\ContainerJobActivator.cs" />
@@ -195,7 +195,7 @@
     <Compile Include="Infrastructure\Impl\DapperDataStorage.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="Infrastructure\Impl\DefaultLogger.cs" />
-    <Compile Include="Processors\PreviousDateStatCleaner.cs" />
+    <Compile Include="Processors\PreviousDateStatProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AppServices\Impl\DefaultIndexProcessor.cs" />
     <Compile Include="Infrastructure\Impl\SignalRBroadcaster.cs" />

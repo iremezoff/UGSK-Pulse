@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
 using System.Web;
 using System.Web.Hosting;
@@ -35,8 +36,8 @@ namespace UGSK.K3.Pulse
             container.Register<IBroadcaster, SignalRBroadcaster>(new PerRequestLifeTime());
             container.Register<IDataStorage, DapperDataStorage>(new PerScopeLifetime());
             container.Register<ICounterQuery, CounterQuery>(new PerScopeLifetime());
-            container.Register<AverageWeekStatisticDailyProcessor, AverageWeekStatisticDailyProcessor>(new PerRequestLifeTime());
-            container.Register<PreviousDateStatCleaner, PreviousDateStatCleaner>(new PerRequestLifeTime());
+            container.Register<PerWeekDailyAverageStatisticProcessor, PerWeekDailyAverageStatisticProcessor>(new PerRequestLifeTime());
+            container.Register<PreviousDateStatProcessor, PreviousDateStatProcessor>(new PerRequestLifeTime());
             container.Register(typeof(CommonProcessorAdapter<>), typeof(CommonProcessorAdapter<>), new PerRequestLifeTime());
 
             container.RegisterApiControllers();
@@ -73,12 +74,24 @@ namespace UGSK.K3.Pulse
 
         public static void InitializeJobs()
         {
-            RecurringJob.AddOrUpdate<CommonProcessorAdapter<AverageWeekStatisticDailyProcessor>>(AverageWeekStatisticDailyProcessor.Name, p => p.Process(DateTime.Now.AddDays(-1).Date), "0 1 * * *");
+            RecurringJob.AddOrUpdate<CommonProcessorAdapter<PerWeekDailyAverageStatisticProcessor>>(PerWeekDailyAverageStatisticProcessor.Name, p => p.Process(DateTime.Now.AddDays(-1).Date), "0 1 * * *");
 
-            RecurringJob.AddOrUpdate<CommonProcessorAdapter<PreviousDateStatCleaner>>(PreviousDateStatCleaner.Name, p => p.Process(DateTime.Now.AddDays(-1).Date), "35 * * * *");
+            RecurringJob.AddOrUpdate<CommonProcessorAdapter<PreviousDateStatProcessor>>(PreviousDateStatProcessor.Name, p => p.Process(DateTime.Now.AddDays(-1).Date), "35 * * * *");
+
+            RecurringJob.AddOrUpdate("test of unslept state", () => WriteLog(), "1 * * * *");
 
             // perform to update statistic if it has not been updated (worker failed, app wasn't run early)
-            RecurringJob.Trigger(AverageWeekStatisticDailyProcessor.Name);
+            RecurringJob.Trigger(PerWeekDailyAverageStatisticProcessor.Name);
+            RecurringJob.Trigger(PreviousDateStatProcessor.Name);
+            RecurringJob.Trigger("test of unslept state");
+        }
+
+        public static void WriteLog()
+        {
+            using (var fs = new StreamWriter(@"c:\Logs\UGSK.K3.Pulse\log.txt", true))
+            {
+                fs.WriteLine(DateTime.Now);
+            }
         }
     }
 
