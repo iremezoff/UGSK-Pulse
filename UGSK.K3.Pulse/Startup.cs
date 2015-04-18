@@ -19,6 +19,7 @@ using UGSK.K3.Pulse.Infrastructure;
 using UGSK.K3.Pulse.Infrastructure.Impl;
 using UGSK.K3.Pulse.Processors;
 using UGSK.K3.Pulse.Processors.SyncAdapters;
+using GlobalConfiguration = Hangfire.GlobalConfiguration;
 
 [assembly: OwinStartup(typeof(UGSK.K3.Pulse.Startup))]
 
@@ -58,14 +59,13 @@ namespace UGSK.K3.Pulse
 
             app.MapSignalR();
 
-            app.UseHangfire(conf =>
-            {
-                conf.UseSqlServerStorage(GlobalOptions.HangfireSqlServer.ConnectionsStringName, new SqlServerStorageOptions { PrepareSchemaIfNecessary = GlobalOptions.HangfireSqlServer.PrepareSchemaIfNecessary });
-                conf.UseServer();
-                conf.UseActivator(new ContainerJobActivator(container));
-            });
+
+            GlobalConfiguration.Configuration.UseActivator(new ContainerJobActivator(container));
+            GlobalConfiguration.Configuration.UseSqlServerStorage(GlobalOptions.HangfireSqlServer.ConnectionsStringName, new SqlServerStorageOptions { PrepareSchemaIfNecessary = GlobalOptions.HangfireSqlServer.PrepareSchemaIfNecessary });
+            app.UseHangfireServer();
+
             app.UseHangfireDashboard();
-           
+
 
             InitializeJobs();
 
