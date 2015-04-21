@@ -27,31 +27,47 @@ namespace UGSK.K3.Pulse
 {
     public class Startup
     {
-        public void Configuration(IAppBuilder app)
+        public static readonly ServiceContainer Container = new ServiceContainer();
+
+        static Startup()
         {
-            var container = new ServiceContainer();
-            container.Register<ICounterProcessor, DefaultCounterProcessorAdapter>(new PerScopeLifetime());
-            container.Register<DefaultCounterProcessorAdapter, DefaultCounterProcessorAdapter>(new PerRequestLifeTime());
-            container.Register<IIndexProcessor, DefaultIndexProcessor>(new PerScopeLifetime());
-            container.Register<ILogger, DefaultLogger>(new PerScopeLifetime());
-            container.Register<IBroadcaster, SignalRBroadcaster>(new PerRequestLifeTime());
-            container.Register<IDataStorage, DapperDataStorage>(new PerScopeLifetime());
-            container.Register<ICounterQuery, CounterQuery>(new PerScopeLifetime());
-            container.Register<PerWeekDailyAverageStatisticProcessor, PerWeekDailyAverageStatisticProcessor>(new PerRequestLifeTime());
-            container.Register<PreviousDateStatProcessor, PreviousDateStatProcessor>(new PerRequestLifeTime());
-            container.Register(typeof(CommonProcessorAdapter<>), typeof(CommonProcessorAdapter<>), new PerRequestLifeTime());
+            GlobalConfiguration.Configuration.UseActivator(new ContainerJobActivator(Startup.Container));
+            GlobalConfiguration.Configuration.UseSqlServerStorage(GlobalOptions.HangfireSqlServer.ConnectionsStringName,
+                new SqlServerStorageOptions
+                {
+                    PrepareSchemaIfNecessary = GlobalOptions.HangfireSqlServer.PrepareSchemaIfNecessary
+                });
+        }
 
-            container.RegisterApiControllers();
+        public static void Configure()
+        {
+            //static class will be called and set all configuration   
+        }
 
-            container.EnableSignalR();
+        public static void Configuration(IAppBuilder app)
+        {
+            Container.Register<ICounterProcessor, DefaultCounterProcessorAdapter>(new PerScopeLifetime());
+            Container.Register<DefaultCounterProcessorAdapter, DefaultCounterProcessorAdapter>(new PerRequestLifeTime());
+            Container.Register<IIndexProcessor, DefaultIndexProcessor>(new PerScopeLifetime());
+            Container.Register<ILogger, DefaultLogger>(new PerScopeLifetime());
+            Container.Register<IBroadcaster, SignalRBroadcaster>(new PerRequestLifeTime());
+            Container.Register<IDataStorage, DapperDataStorage>(new PerScopeLifetime());
+            Container.Register<ICounterQuery, CounterQuery>(new PerScopeLifetime());
+            Container.Register<PerWeekDailyAverageStatisticProcessor, PerWeekDailyAverageStatisticProcessor>(new PerRequestLifeTime());
+            Container.Register<PreviousDateStatProcessor, PreviousDateStatProcessor>(new PerRequestLifeTime());
+            Container.Register(typeof(CommonProcessorAdapter<>), typeof(CommonProcessorAdapter<>), new PerRequestLifeTime());
+
+            Container.RegisterApiControllers();
+
+            Container.EnableSignalR();
 
             var config = new HttpConfiguration();
             config.MapHttpAttributeRoutes();
             config.Routes.MapHttpRoute("default", "api/{Controller}");
             config.EnableCors(new EnableCorsAttribute("*", "*", "get"));
 
-            container.EnableWebApi(config);
-            container.ScopeManagerProvider = new PerLogicalCallContextScopeManagerProvider(); // for 4.5 async purposes
+            Container.EnableWebApi(config);
+            Container.ScopeManagerProvider = new PerLogicalCallContextScopeManagerProvider(); // for 4.5 async purposes
 
             app.UseWebApi(config);
 
@@ -59,9 +75,6 @@ namespace UGSK.K3.Pulse
 
             app.MapSignalR();
 
-
-            GlobalConfiguration.Configuration.UseActivator(new ContainerJobActivator(container));
-            GlobalConfiguration.Configuration.UseSqlServerStorage(GlobalOptions.HangfireSqlServer.ConnectionsStringName, new SqlServerStorageOptions { PrepareSchemaIfNecessary = GlobalOptions.HangfireSqlServer.PrepareSchemaIfNecessary });
             app.UseHangfireServer();
 
             app.UseHangfireDashboard();
@@ -73,6 +86,8 @@ namespace UGSK.K3.Pulse
               options.PerformPassThrough = context =>
                   context.Response.StatusCode == HttpStatusCode.NotFound);
         }
+
+
 
         public static void InitializeJobs()
         {
@@ -107,6 +122,8 @@ namespace UGSK.K3.Pulse
     {
         public void Preload(string[] parameters)
         {
+            Startup.Configure();
+
             HangfireBootstrapper.Instance.Start();
         }
     }
@@ -118,6 +135,8 @@ namespace UGSK.K3.Pulse
     {
         protected void Application_Start(object sender, EventArgs e)
         {
+            Startup.Configure();
+
             HangfireBootstrapper.Instance.Start();
         }
 
@@ -154,14 +173,7 @@ namespace UGSK.K3.Pulse
 
                 HostingEnvironment.RegisterObject(this);
 
-                JobStorage.Current = new SqlServerStorage(GlobalOptions.HangfireSqlServer.ConnectionsStringName,
-                    new SqlServerStorageOptions()
-                    {
-                        PrepareSchemaIfNecessary = GlobalOptions.HangfireSqlServer.PrepareSchemaIfNecessary
-                    });
-
                 _backgroundJobServer = new BackgroundJobServer();
-                _backgroundJobServer.Start();
 
                 Startup.WriteLog("server start");
             }
